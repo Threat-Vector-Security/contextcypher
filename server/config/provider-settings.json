@@ -1,0 +1,20 @@
+{
+  "provider": "local",
+  "config": {
+    "organizationId": null,
+    "projectId": null,
+    "baseUrl": "http://127.0.0.1:11434",
+    "model": "llama3.1:8b",
+    "temperature": 0.2,
+    "maxTokens": 131072,
+    "gpuMemoryFraction": 0.9,
+    "numThreads": 0,
+    "batchSize": 512,
+    "gpuOverhead": 1024,
+    "numParallel": 1,
+    "maxLoadedModels": 1,
+    "keepAlive": "5m",
+    "gpuLayers": -1,
+    "selectedGPU": "auto"
+  }
+}

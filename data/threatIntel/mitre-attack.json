@@ -1,0 +1,194 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "lastUpdated": "2025-01-07T12:00:00Z",
+    "source": "MITRE ATT&CK Framework",
+    "description": "Essential MITRE ATT&CK techniques for offline threat modeling"
+  },
+  "techniques": [
+    {
+      "id": "T1190",
+      "name": "Exploit Public-Facing Application",
+      "description": "Adversaries may attempt to take advantage of a weakness in an Internet-facing computer or program using software, data, or commands in order to cause unintended or unanticipated behavior.",
+      "platforms": ["Windows", "Linux", "macOS", "Cloud"],
+      "tactics": ["initial-access"],
+      "severity": "HIGH",
+      "url": "https://attack.mitre.org/techniques/T1190/",
+      "created": "2017-05-31T21:31:04.307Z",
+      "modified": "2023-03-30T21:01:52.748Z"
+    },
+    {
+      "id": "T1566",
+      "name": "Phishing",
+      "description": "Adversaries may send phishing messages to gain access to victim systems.",
+      "platforms": ["Windows", "Linux", "macOS", "Cloud"],
+      "tactics": ["initial-access"],
+      "severity": "HIGH",
+      "url": "https://attack.mitre.org/techniques/T1566/",
+      "created": "2020-03-02T18:49:58.780Z",
+      "modified": "2023-03-30T21:01:52.748Z"
+    },
+    {
+      "id": "T1078",
+      "name": "Valid Accounts",
+      "description": "Adversaries may obtain and abuse credentials of existing accounts as a means of gaining Initial Access, Persistence, Privilege Escalation, or Defense Evasion.",
+      "platforms": ["Windows", "Linux", "macOS", "Cloud"],
+      "tactics": ["defense-evasion", "persistence", "privilege-escalation", "initial-access"],
+      "severity": "HIGH",
+      "url": "https://attack.mitre.org/techniques/T1078/",
+      "created": "2017-05-31T21:30:19.735Z",
+      "modified": "2023-03-30T21:01:52.748Z"
+    },
+    {
+      "id": "T1055",
+      "name": "Process Injection",
+      "description": "Adversaries may inject code into processes in order to evade process-based defenses as well as possibly elevate privileges.",
+      "platforms": ["Windows", "Linux", "macOS"],
+      "tactics": ["defense-evasion", "privilege-escalation"],
+      "severity": "HIGH",
+      "url": "https://attack.mitre.org/techniques/T1055/",
+      "created": "2017-05-31T21:30:32.068Z",
+      "modified": "2023-03-30T21:01:52.748Z"
+    },
+    {
+      "id": "T1059",
+      "name": "Command and Scripting Interpreter",
+      "description": "Adversaries may abuse command and script interpreters to execute commands, scripts, or binaries.",
+      "platforms": ["Windows", "Linux", "macOS", "Cloud"],
+      "tactics": ["execution"],
+      "severity": "HIGH",
+      "url": "https://attack.mitre.org/techniques/T1059/",
+      "created": "2017-05-31T21:30:32.068Z",
+      "modified": "2023-03-30T21:01:52.748Z"
+    },
+    {
+      "id": "T1021",
+      "name": "Remote Services",
+      "description": "Adversaries may use Valid Accounts to log into a service specifically designed to accept remote connections.",
+      "platforms": ["Windows", "Linux", "macOS", "Cloud"],
+      "tactics": ["lateral-movement"],
+      "severity": "MEDIUM",
+      "url": "https://attack.mitre.org/techniques/T1021/",
+      "created": "2017-05-31T21:30:47.843Z",
+      "modified": "2023-03-30T21:01:52.748Z"
+    },
+    {
+      "id": "T1018",
+      "name": "Remote System Discovery",
+      "description": "Adversaries may attempt to get a listing of other systems by IP address, hostname, or other logical identifier on a network.",
+      "platforms": ["Windows", "Linux", "macOS", "Cloud"],
+      "tactics": ["discovery"],
+      "severity": "MEDIUM",
+      "url": "https://attack.mitre.org/techniques/T1018/",
+      "created": "2017-05-31T21:30:47.843Z",
+      "modified": "2023-03-30T21:01:52.748Z"
+    },
+    {
+      "id": "T1110",
+      "name": "Brute Force",
+      "description": "Adversaries may use brute force techniques to gain access to accounts when passwords are unknown or when password hashes are obtained.",
+      "platforms": ["Windows", "Linux", "macOS", "Cloud"],
+      "tactics": ["credential-access"],
+      "severity": "MEDIUM",
+      "url": "https://attack.mitre.org/techniques/T1110/",
+      "created": "2017-05-31T21:31:04.307Z",
+      "modified": "2023-03-30T21:01:52.748Z"
+    },
+    {
+      "id": "T1071",
+      "name": "Application Layer Protocol",
+      "description": "Adversaries may communicate using application layer protocols to avoid detection/network filtering by blending in with existing traffic.",
+      "platforms": ["Windows", "Linux", "macOS", "Cloud"],
+      "tactics": ["command-and-control"],
+      "severity": "MEDIUM",
+      "url": "https://attack.mitre.org/techniques/T1071/",
+      "created": "2017-05-31T21:31:04.307Z",
+      "modified": "2023-03-30T21:01:52.748Z"
+    },
+    {
+      "id": "T1565",
+      "name": "Data Manipulation",
+      "description": "Adversaries may insert, delete, or manipulate data in order to influence external outcomes or hide activity.",
+      "platforms": ["Windows", "Linux", "macOS", "Cloud"],
+      "tactics": ["impact"],
+      "severity": "HIGH",
+      "url": "https://attack.mitre.org/techniques/T1565/",
+      "created": "2020-03-02T18:49:58.780Z",
+      "modified": "2023-03-30T21:01:52.748Z"
+    }
+  ],
+  "tactics": [
+    {
+      "id": "TA0001",
+      "name": "Initial Access",
+      "description": "The adversary is trying to get into your network.",
+      "shortName": "initial-access"
+    },
+    {
+      "id": "TA0002",
+      "name": "Execution",
+      "description": "The adversary is trying to run malicious code.",
+      "shortName": "execution"
+    },
+    {
+      "id": "TA0003",
+      "name": "Persistence",
+      "description": "The adversary is trying to maintain their foothold.",
+      "shortName": "persistence"
+    },
+    {
+      "id": "TA0004",
+      "name": "Privilege Escalation",
+      "description": "The adversary is trying to gain higher-level permissions.",
+      "shortName": "privilege-escalation"
+    },
+    {
+      "id": "TA0005",
+      "name": "Defense Evasion",
+      "description": "The adversary is trying to avoid being detected.",
+      "shortName": "defense-evasion"
+    },
+    {
+      "id": "TA0006",
+      "name": "Credential Access",
+      "description": "The adversary is trying to steal account names and passwords.",
+      "shortName": "credential-access"
+    },
+    {
+      "id": "TA0007",
+      "name": "Discovery",
+      "description": "The adversary is trying to figure out your environment.",
+      "shortName": "discovery"
+    },
+    {
+      "id": "TA0008",
+      "name": "Lateral Movement",
+      "description": "The adversary is trying to move through your environment.",
+      "shortName": "lateral-movement"
+    },
+    {
+      "id": "TA0009",
+      "name": "Collection",
+      "description": "The adversary is trying to gather data of interest to their goal.",
+      "shortName": "collection"
+    },
+    {
+      "id": "TA0011",
+      "name": "Command and Control",
+      "description": "The adversary is trying to communicate with compromised systems to control them.",
+      "shortName": "command-and-control"
+    },
+    {
+      "id": "TA0010",
+      "name": "Exfiltration",
+      "description": "The adversary is trying to steal data.",
+      "shortName": "exfiltration"
+    },
+    {
+      "id": "TA0040",
+      "name": "Impact",
+      "description": "The adversary is trying to manipulate, interrupt, or destroy your systems and data.",
+      "shortName": "impact"
+    }
+  ]
+} 

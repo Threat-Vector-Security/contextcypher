@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "name": "Scattered Spider Identity Attack Scenario",
+  "description": "Analysis focused on Scattered Spider threat group's identity-focused attack patterns",
+  "targetedAnalysis": {
+    "threatActors": "Scattered Spider (UNC3944, 0ktapus, Roasted 0ktapus) - Financially motivated cybercriminal group known for social engineering and identity attacks",
+    "ttps": "T1078 Valid Accounts, T1566.001 Spearphishing Attachment, T1621 Multi-Factor Authentication Request Generation, T1556.006 Multi-Factor Authentication, T1110 Brute Force, T1136.003 Create Cloud Account, T1098 Account Manipulation",
+    "vulnerabilities": "Weak MFA enrollment processes, Lack of phishing-resistant authentication, Missing conditional access policies, Vulnerable identity federation configurations, Default privileged account settings",
+    "focusAreas": "Identity and Access Management systems (Okta, Azure AD), vSphere/VMware infrastructure, Cloud admin portals, Privileged access management",
+    "scenarioDescription": "Scattered Spider typically targets organizations through sophisticated social engineering to compromise identity systems. They are known for calling help desks to reset MFA, exploiting identity provider weaknesses, and moving laterally through cloud environments. This scenario analyzes how they might exploit identity and virtualization infrastructure based on their known tactics."
+  },
+  "timestamp": "2024-01-15T10:00:00.000Z"
+}

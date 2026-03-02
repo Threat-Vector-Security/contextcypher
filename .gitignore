@@ -1,0 +1,191 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/api/node_modules/
+server/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+/release/
+/server_dist/
+/src-tauri/resources/server_dist/
+
+# security - enterprise key generation
+/scripts/generate-enterprise-key.js
+
+# misc
+.DS_Store
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+.env
+*.committed
+
+# Claude Flow metrics
+.claude-flow/metrics/
+/server/project_structure
+AI-Threat-Modeler-App-Architecture
+server/project_structure.txt
+
+Notes.md
+Notes
+
+# Large model files and binaries
+/models/
+*.gguf
+*.bin
+*.safetensors
+*.pkl
+*.pt
+*.pth
+
+# Large data files
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs and cache
+/logs/
+/cache/
+.cache/
+*.log
+server/logs/
+**/logs/
+
+# Models directory - large AI model files
+/models/
+
+# Rust/Tauri build artifacts
+src-tauri/target/
+src-tauri/binaries/
+x86_64-unknown-linux-gnu/
+
+# Build and installer artifacts
+installer/
+*.msi
+*.zip
+*.tar.gz
+*.exe
+ContextCypher-Setup-*.exe
+ContextCypher-Portable-*.zip
+
+# Code signing
+.env.signing
+scripts/CodeSignTool/
+
+# Additional build artifacts
+/build/
+/dist/
+server/build/
+server/dist/
+*.tsbuildinfo
+
+# Python environments and cache
+server/venv/
+server/__pycache__/
+**/__pycache__/
+.venv/
+.semgrep/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+*.pkg
+
+# Dynamic/temporary files
+.current-port
+nul
+
+# Swarms agent workspace artifacts
+**/agent_workspace/
+**/prompt-id-*.json
+
+# Test files (uncomment if you want to ignore tests)
+# server/test_*.py
+# server/test_*.js
+
+# Claude Flow generated files
+.claude/settings.local.json
+.mcp.json
+claude-flow.config.json
+.swarm/
+.hive-mind/
+memory/claude-flow-data.json
+memory/sessions/*
+!memory/sessions/README.md
+memory/agents/*
+!memory/agents/README.md
+coordination/memory_bank/*
+coordination/subtasks/*
+coordination/orchestration/*
+*.db
+*.db-journal
+*.db-wal
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
+claude-flow
+claude-flow.bat
+claude-flow.ps1
+hive-mind-prompt-*.txt
+server/.claude-flow/metrics/performance.json
+server/.claude-flow/metrics/task-metrics.json
+
+# ReactFlow Examples directory
+/ReactFlow Examples/
+ReactFlow Examples/
+
+# NPM build artifacts
+npm-dist/
+*.tgz
+
+# Temporary build files
+temp/
+temp-check/
+
+# Platform-specific installers
+installers-*/
+*.dmg
+*.deb
+*.AppImage
+*.rpm
+
+# Docker build artifacts
+.dockerignore
+docker-compose.yml
+Dockerfile
+
+# Code signing
+.env.signing
+.env.signing.example
+scripts/CodeSignTool/
+scripts/load-signing-env.cmd
+scripts/sign-msi.ps1
+
+# Build scripts temporary files
+build-*.cmd
+!build.cmd
+
+# NPM package files
+.npmignore
+/api/package-lock.json
+README-npm.md
+bin/
+.vercel
+

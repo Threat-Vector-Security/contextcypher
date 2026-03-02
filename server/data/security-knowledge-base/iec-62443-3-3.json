@@ -1,0 +1,654 @@
+{
+  "metadata": {
+    "version": "3-3:2013",
+    "lastUpdated": "2026-02-22T00:00:00Z",
+    "source": "IEC 62443-3-3:2013 System Security Requirements and Security Levels",
+    "description": "Foundational requirements and system requirements for IACS security"
+  },
+  "controls": [
+    {
+      "id": "SR 1.1",
+      "name": "Human user identification and authentication",
+      "family": "FR1 - Identification & Authentication Control",
+      "description": "The control system shall provide the capability to identify and authenticate all human users.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 1.1 RE 1",
+      "name": "Unique identification and authentication",
+      "family": "FR1 - Identification & Authentication Control",
+      "description": "The control system shall provide the capability to uniquely identify and authenticate all human users.",
+      "securityLevel": "SL2"
+    },
+    {
+      "id": "SR 1.1 RE 2",
+      "name": "Multifactor authentication for untrusted networks",
+      "family": "FR1 - Identification & Authentication Control",
+      "description": "The control system shall provide the capability to employ multifactor authentication for human user access to the control system via an untrusted network.",
+      "securityLevel": "SL3"
+    },
+    {
+      "id": "SR 1.1 RE 3",
+      "name": "Multifactor authentication for all networks",
+      "family": "FR1 - Identification & Authentication Control",
+      "description": "The control system shall provide the capability to employ multifactor authentication for all human user access to the control system.",
+      "securityLevel": "SL4"
+    },
+    {
+      "id": "SR 1.2",
+      "name": "Software process and device identification and authentication",
+      "family": "FR1 - Identification & Authentication Control",
+      "description": "The control system shall provide the capability to identify and authenticate all software processes and devices.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 1.2 RE 1",
+      "name": "Unique identification and authentication",
+      "family": "FR1 - Identification & Authentication Control",
+      "description": "The control system shall provide the capability to uniquely identify and authenticate all software processes and devices.",
+      "securityLevel": "SL2"
+    },
+    {
+      "id": "SR 1.3",
+      "name": "Account management",
+      "family": "FR1 - Identification & Authentication Control",
+      "description": "The control system shall provide the capability to support the management of all accounts by authorized users, including adding, activating, modifying, disabling, and removing accounts.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 1.3 RE 1",
+      "name": "Unified account management",
+      "family": "FR1 - Identification & Authentication Control",
+      "description": "The control system shall provide the capability to support unified account management including at minimum the management of control system and IACS network/device accounts from a single management interface.",
+      "securityLevel": "SL3"
+    },
+    {
+      "id": "SR 1.4",
+      "name": "Identifier management",
+      "family": "FR1 - Identification & Authentication Control",
+      "description": "The control system shall provide the capability to support the management of identifiers by user, group, role, or control system interface.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 1.5",
+      "name": "Authenticator management",
+      "family": "FR1 - Identification & Authentication Control",
+      "description": "The control system shall provide the capability to manage and protect all authenticators.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 1.5 RE 1",
+      "name": "Hardware security for authenticator storage",
+      "family": "FR1 - Identification & Authentication Control",
+      "description": "The control system shall provide the capability to support the use of hardware mechanisms for authenticator protection.",
+      "securityLevel": "SL3"
+    },
+    {
+      "id": "SR 1.6",
+      "name": "Wireless access management",
+      "family": "FR1 - Identification & Authentication Control",
+      "description": "The control system shall provide the capability to identify and authenticate all users (humans, software processes, and devices) engaged in wireless communication.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 1.7",
+      "name": "Strength of password-based authentication",
+      "family": "FR1 - Identification & Authentication Control",
+      "description": "The control system shall provide the capability to enforce configurable password strength based on minimum password length and variety of character types.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 1.7 RE 1",
+      "name": "Password generation and lifetime for human users",
+      "family": "FR1 - Identification & Authentication Control",
+      "description": "The control system shall provide the capability to generate and enforce lifetime restrictions on passwords used by human users.",
+      "securityLevel": "SL2"
+    },
+    {
+      "id": "SR 1.7 RE 2",
+      "name": "Password lifetime for all users",
+      "family": "FR1 - Identification & Authentication Control",
+      "description": "The control system shall provide the capability to enforce lifetime restrictions on passwords used by all users.",
+      "securityLevel": "SL3"
+    },
+    {
+      "id": "SR 1.8",
+      "name": "Public key infrastructure certificates",
+      "family": "FR1 - Identification & Authentication Control",
+      "description": "The control system shall provide the capability to generate, manage, and verify PKI certificates per established policy.",
+      "securityLevel": "SL2"
+    },
+    {
+      "id": "SR 1.9",
+      "name": "Strength of public key authentication",
+      "family": "FR1 - Identification & Authentication Control",
+      "description": "The control system shall provide the capability to enforce minimum key length for public key-based authentication.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 1.9 RE 1",
+      "name": "Hardware security for public key authentication",
+      "family": "FR1 - Identification & Authentication Control",
+      "description": "The control system shall provide the capability to store private keys in hardware-protected storage.",
+      "securityLevel": "SL3"
+    },
+    {
+      "id": "SR 1.10",
+      "name": "Authenticator feedback",
+      "family": "FR1 - Identification & Authentication Control",
+      "description": "The control system shall provide the capability to obscure feedback of authentication information during the authentication process.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 1.11",
+      "name": "Unsuccessful login attempts",
+      "family": "FR1 - Identification & Authentication Control",
+      "description": "The control system shall provide the capability to enforce a limit of consecutive invalid access attempts and take configurable action.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 1.12",
+      "name": "System use notification",
+      "family": "FR1 - Identification & Authentication Control",
+      "description": "The control system shall provide the capability to display a system use notification message before authenticating.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 1.13",
+      "name": "Access via untrusted networks",
+      "family": "FR1 - Identification & Authentication Control",
+      "description": "The control system shall provide the capability to monitor and control all access methods via untrusted networks.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 1.13 RE 1",
+      "name": "Explicit access request approval",
+      "family": "FR1 - Identification & Authentication Control",
+      "description": "The control system shall provide the capability to deny access by default and allow access to the control system only after explicit approval.",
+      "securityLevel": "SL3"
+    },
+    {
+      "id": "SR 2.1",
+      "name": "Authorization enforcement",
+      "family": "FR2 - Use Control",
+      "description": "The control system shall provide the capability to enforce authorizations assigned to all human users for controlling use of the control system.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 2.1 RE 1",
+      "name": "Authorization enforcement for all users",
+      "family": "FR2 - Use Control",
+      "description": "The control system shall provide the capability to enforce authorizations assigned to all users (human, software process, and device) for controlling use of the control system.",
+      "securityLevel": "SL2"
+    },
+    {
+      "id": "SR 2.1 RE 2",
+      "name": "Permission mapping to roles",
+      "family": "FR2 - Use Control",
+      "description": "The control system shall provide the capability to map permissions to roles for the purpose of use control.",
+      "securityLevel": "SL2"
+    },
+    {
+      "id": "SR 2.1 RE 3",
+      "name": "Supervisor override",
+      "family": "FR2 - Use Control",
+      "description": "The control system shall provide the capability to support supervisor override to allow all authorized actions.",
+      "securityLevel": "SL3"
+    },
+    {
+      "id": "SR 2.1 RE 4",
+      "name": "Dual approval",
+      "family": "FR2 - Use Control",
+      "description": "The control system shall provide the capability to support dual approval for critical actions.",
+      "securityLevel": "SL4"
+    },
+    {
+      "id": "SR 2.2",
+      "name": "Wireless use control",
+      "family": "FR2 - Use Control",
+      "description": "The control system shall provide the capability to authorize, monitor, and enforce usage restrictions for wireless connectivity to the control system.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 2.3",
+      "name": "Use control for portable and mobile devices",
+      "family": "FR2 - Use Control",
+      "description": "The control system shall provide the capability to enforce use control policies for portable and mobile devices.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 2.4",
+      "name": "Mobile code",
+      "family": "FR2 - Use Control",
+      "description": "The control system shall provide the capability to enforce mobile code use control policies.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 2.4 RE 1",
+      "name": "Mobile code integrity check",
+      "family": "FR2 - Use Control",
+      "description": "The control system shall provide the capability to verify integrity of mobile code before execution.",
+      "securityLevel": "SL3"
+    },
+    {
+      "id": "SR 2.5",
+      "name": "Session lock",
+      "family": "FR2 - Use Control",
+      "description": "The control system shall provide the capability to prevent further access by initiating a session lock after a configurable time period of inactivity.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 2.6",
+      "name": "Remote session termination",
+      "family": "FR2 - Use Control",
+      "description": "The control system shall provide the capability to terminate a remote session either automatically after a configurable time period of inactivity or manually by the user who initiated the session.",
+      "securityLevel": "SL2"
+    },
+    {
+      "id": "SR 2.7",
+      "name": "Concurrent session control",
+      "family": "FR2 - Use Control",
+      "description": "The control system shall provide the capability to limit the number of concurrent sessions per interface for any given user.",
+      "securityLevel": "SL2"
+    },
+    {
+      "id": "SR 2.8",
+      "name": "Auditable events",
+      "family": "FR2 - Use Control",
+      "description": "The control system shall provide the capability to generate audit records relevant to security for access to the system and configuration changes.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 2.8 RE 1",
+      "name": "Centrally managed, system-wide audit trail",
+      "family": "FR2 - Use Control",
+      "description": "The control system shall provide the capability to generate centrally managed, system-wide audit trail of actions.",
+      "securityLevel": "SL3"
+    },
+    {
+      "id": "SR 2.9",
+      "name": "Audit storage capacity",
+      "family": "FR2 - Use Control",
+      "description": "The control system shall provide the capability to allocate audit record storage capacity according to the needs of the organization.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 2.10",
+      "name": "Response to audit processing failures",
+      "family": "FR2 - Use Control",
+      "description": "The control system shall provide the capability to alert personnel and prevent the loss of essential audit records in the event of an audit processing failure.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 2.11",
+      "name": "Timestamps",
+      "family": "FR2 - Use Control",
+      "description": "The control system shall provide the capability to generate timestamps for use in audit records.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 2.11 RE 1",
+      "name": "Internal time synchronization",
+      "family": "FR2 - Use Control",
+      "description": "The control system shall provide the capability to use an internal time source to generate timestamps for audit records.",
+      "securityLevel": "SL2"
+    },
+    {
+      "id": "SR 2.11 RE 2",
+      "name": "Protection of time source integrity",
+      "family": "FR2 - Use Control",
+      "description": "The control system shall provide the capability to protect the integrity of the time source from unauthorized changes.",
+      "securityLevel": "SL3"
+    },
+    {
+      "id": "SR 2.12",
+      "name": "Non-repudiation",
+      "family": "FR2 - Use Control",
+      "description": "The control system shall provide the capability to ensure non-repudiation for all users.",
+      "securityLevel": "SL3"
+    },
+    {
+      "id": "SR 3.1",
+      "name": "Communication integrity",
+      "family": "FR3 - System Integrity",
+      "description": "The control system shall provide the capability to protect the integrity of transmitted information.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 3.1 RE 1",
+      "name": "Cryptographic integrity protection",
+      "family": "FR3 - System Integrity",
+      "description": "The control system shall provide the capability to employ cryptographic mechanisms to recognize changes to information during communication.",
+      "securityLevel": "SL2"
+    },
+    {
+      "id": "SR 3.2",
+      "name": "Malicious code protection",
+      "family": "FR3 - System Integrity",
+      "description": "The control system shall provide the capability to employ protection mechanisms to prevent, detect, report, and mitigate the effects of malicious code.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 3.2 RE 1",
+      "name": "Malicious code protection on entry and exit points",
+      "family": "FR3 - System Integrity",
+      "description": "The control system shall provide the capability to employ malicious code protection mechanisms at entry and exit points of the control system.",
+      "securityLevel": "SL2"
+    },
+    {
+      "id": "SR 3.2 RE 2",
+      "name": "Central management and reporting for malicious code protection",
+      "family": "FR3 - System Integrity",
+      "description": "The control system shall provide the capability to centrally manage malicious code protection mechanisms and automatically report malicious code detection.",
+      "securityLevel": "SL3"
+    },
+    {
+      "id": "SR 3.3",
+      "name": "Security functionality verification",
+      "family": "FR3 - System Integrity",
+      "description": "The control system shall provide the capability to support verification of the intended operation of security functions and report when anomalies are discovered.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 3.3 RE 1",
+      "name": "Automated mechanisms for security functionality verification",
+      "family": "FR3 - System Integrity",
+      "description": "The control system shall provide the capability to support the use of automated mechanisms to verify security functions at configurable intervals.",
+      "securityLevel": "SL2"
+    },
+    {
+      "id": "SR 3.3 RE 2",
+      "name": "Security functionality verification during anomalous conditions",
+      "family": "FR3 - System Integrity",
+      "description": "The control system shall provide the capability to verify security functions during anomalous conditions.",
+      "securityLevel": "SL3"
+    },
+    {
+      "id": "SR 3.4",
+      "name": "Software and information integrity",
+      "family": "FR3 - System Integrity",
+      "description": "The control system shall provide the capability to detect, record, report, and protect against unauthorized changes to software and information at rest.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 3.4 RE 1",
+      "name": "Automated notification of integrity violations",
+      "family": "FR3 - System Integrity",
+      "description": "The control system shall provide the capability to use automated tools that provide notification of integrity violations.",
+      "securityLevel": "SL2"
+    },
+    {
+      "id": "SR 3.5",
+      "name": "Input validation",
+      "family": "FR3 - System Integrity",
+      "description": "The control system shall provide the capability to validate the syntax and content of any input which is used as an industrial process control input or directly affects the action of the control system.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 3.6",
+      "name": "Deterministic output",
+      "family": "FR3 - System Integrity",
+      "description": "The control system shall provide the capability to set outputs to a predetermined state if normal operation cannot be maintained as a result of an attack.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 3.7",
+      "name": "Error handling",
+      "family": "FR3 - System Integrity",
+      "description": "The control system shall provide the capability to perform error handling such that error messages do not reveal potentially exploitable information.",
+      "securityLevel": "SL2"
+    },
+    {
+      "id": "SR 3.8",
+      "name": "Session integrity",
+      "family": "FR3 - System Integrity",
+      "description": "The control system shall provide the capability to protect the integrity of sessions by rejecting invalid session IDs.",
+      "securityLevel": "SL2"
+    },
+    {
+      "id": "SR 3.8 RE 1",
+      "name": "Invalidation of session IDs after session termination",
+      "family": "FR3 - System Integrity",
+      "description": "The control system shall provide the capability to invalidate session IDs upon user logout or other session termination.",
+      "securityLevel": "SL2"
+    },
+    {
+      "id": "SR 3.8 RE 2",
+      "name": "Unique session ID generation",
+      "family": "FR3 - System Integrity",
+      "description": "The control system shall provide the capability to generate unique session IDs using a random number generator.",
+      "securityLevel": "SL3"
+    },
+    {
+      "id": "SR 3.8 RE 3",
+      "name": "Session ID expiration after inactivity",
+      "family": "FR3 - System Integrity",
+      "description": "The control system shall provide the capability to expire session IDs after a configurable time period of inactivity.",
+      "securityLevel": "SL3"
+    },
+    {
+      "id": "SR 4.1",
+      "name": "Information confidentiality",
+      "family": "FR4 - Data Confidentiality",
+      "description": "The control system shall provide the capability to protect the confidentiality of information for which explicit read authorization is supported, whether at rest or in transit.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 4.1 RE 1",
+      "name": "Protection of confidentiality at rest or in transit via untrusted networks",
+      "family": "FR4 - Data Confidentiality",
+      "description": "The control system shall provide the capability to employ cryptographic mechanisms to protect confidentiality of information at rest and in transit via an untrusted network.",
+      "securityLevel": "SL2"
+    },
+    {
+      "id": "SR 4.1 RE 2",
+      "name": "Protection of confidentiality across all networks",
+      "family": "FR4 - Data Confidentiality",
+      "description": "The control system shall provide the capability to employ cryptographic mechanisms to protect confidentiality of information at rest and in transit across all networks.",
+      "securityLevel": "SL3"
+    },
+    {
+      "id": "SR 4.2",
+      "name": "Information persistence",
+      "family": "FR4 - Data Confidentiality",
+      "description": "The control system shall provide the capability to purge all information from any component resource upon its decommissioning or reassignment.",
+      "securityLevel": "SL2"
+    },
+    {
+      "id": "SR 4.2 RE 1",
+      "name": "Purging of shared memory resources",
+      "family": "FR4 - Data Confidentiality",
+      "description": "The control system shall provide the capability to purge shared memory resources to prevent leakage of information between users.",
+      "securityLevel": "SL3"
+    },
+    {
+      "id": "SR 4.3",
+      "name": "Use of cryptography",
+      "family": "FR4 - Data Confidentiality",
+      "description": "The control system shall provide the capability to employ cryptographic mechanisms generally recognized as being compliant with industry-accepted standards.",
+      "securityLevel": "SL2"
+    },
+    {
+      "id": "SR 5.1",
+      "name": "Network segmentation",
+      "family": "FR5 - Restricted Data Flow",
+      "description": "The control system shall provide the capability to logically segment control system networks from non-control system networks and to logically segment critical control system networks from other control system networks.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 5.1 RE 1",
+      "name": "Physical network segmentation",
+      "family": "FR5 - Restricted Data Flow",
+      "description": "The control system shall provide the capability to physically segment control system networks from non-control system networks.",
+      "securityLevel": "SL2"
+    },
+    {
+      "id": "SR 5.1 RE 2",
+      "name": "Independence from non-control system network services",
+      "family": "FR5 - Restricted Data Flow",
+      "description": "The control system shall provide the capability to maintain operation when the control system network is physically or logically severed from non-control system networks.",
+      "securityLevel": "SL3"
+    },
+    {
+      "id": "SR 5.1 RE 3",
+      "name": "Logical and physical isolation of critical networks",
+      "family": "FR5 - Restricted Data Flow",
+      "description": "The control system shall provide the capability to logically and physically isolate critical control system networks from other control system and non-control system networks.",
+      "securityLevel": "SL4"
+    },
+    {
+      "id": "SR 5.2",
+      "name": "Zone boundary protection",
+      "family": "FR5 - Restricted Data Flow",
+      "description": "The control system shall provide the capability to monitor and control communications at zone boundaries to enforce the compartmentalization defined in the risk-based zones and conduits model.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 5.2 RE 1",
+      "name": "Deny by default, allow by exception",
+      "family": "FR5 - Restricted Data Flow",
+      "description": "The control system shall provide the capability to deny network traffic by default and allow network traffic by exception (deny all, permit by exception).",
+      "securityLevel": "SL2"
+    },
+    {
+      "id": "SR 5.2 RE 2",
+      "name": "Island mode",
+      "family": "FR5 - Restricted Data Flow",
+      "description": "The control system shall provide the capability to continue operation in island mode, where zone boundary communications are blocked.",
+      "securityLevel": "SL3"
+    },
+    {
+      "id": "SR 5.2 RE 3",
+      "name": "Fail close",
+      "family": "FR5 - Restricted Data Flow",
+      "description": "The control system shall provide the capability to prevent communications via zone boundary protections in the event of a device failure (fail close).",
+      "securityLevel": "SL3"
+    },
+    {
+      "id": "SR 5.3",
+      "name": "General purpose person-to-person communication restrictions",
+      "family": "FR5 - Restricted Data Flow",
+      "description": "The control system shall provide the capability to prevent general purpose person-to-person messages from being received from users or systems external to the control system.",
+      "securityLevel": "SL2"
+    },
+    {
+      "id": "SR 5.4",
+      "name": "Application partitioning",
+      "family": "FR5 - Restricted Data Flow",
+      "description": "The control system shall provide the capability to support partitioning of data, applications, and services based on criticality into separate zones.",
+      "securityLevel": "SL2"
+    },
+    {
+      "id": "SR 6.1",
+      "name": "Audit log accessibility",
+      "family": "FR6 - Timely Response to Events",
+      "description": "The control system shall provide the capability to support read-only access to audit logs for authorized users.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 6.1 RE 1",
+      "name": "Programmatic access to audit logs",
+      "family": "FR6 - Timely Response to Events",
+      "description": "The control system shall provide the capability to programmatically access audit logs.",
+      "securityLevel": "SL3"
+    },
+    {
+      "id": "SR 6.2",
+      "name": "Continuous monitoring",
+      "family": "FR6 - Timely Response to Events",
+      "description": "The control system shall provide the capability to continuously monitor all security mechanism performance using commonly accepted security industry practices and recommendations to detect, characterize, and report security breaches in a timely manner.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 7.1",
+      "name": "Denial of service protection",
+      "family": "FR7 - Resource Availability",
+      "description": "The control system shall provide the capability to protect against denial of service attacks by employing rate-limiting, traffic-shaping, or other mechanisms to minimize the effects on the control system.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 7.1 RE 1",
+      "name": "Manage communication loads",
+      "family": "FR7 - Resource Availability",
+      "description": "The control system shall provide the capability to manage communication loads to mitigate the effects of DoS type events.",
+      "securityLevel": "SL2"
+    },
+    {
+      "id": "SR 7.1 RE 2",
+      "name": "Limit DoS effects to other systems or networks",
+      "family": "FR7 - Resource Availability",
+      "description": "The control system shall provide the capability to limit the effects of DoS events on other systems and networks.",
+      "securityLevel": "SL3"
+    },
+    {
+      "id": "SR 7.2",
+      "name": "Resource management",
+      "family": "FR7 - Resource Availability",
+      "description": "The control system shall provide the capability to limit the use of resources by security functions to prevent resource exhaustion.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 7.3",
+      "name": "Control system backup",
+      "family": "FR7 - Resource Availability",
+      "description": "The control system shall provide the capability to support backup of the control system state and all data necessary to restore the control system to a known good state.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 7.3 RE 1",
+      "name": "Backup verification",
+      "family": "FR7 - Resource Availability",
+      "description": "The control system shall provide the capability to verify the integrity of backups.",
+      "securityLevel": "SL2"
+    },
+    {
+      "id": "SR 7.3 RE 2",
+      "name": "Backup automation",
+      "family": "FR7 - Resource Availability",
+      "description": "The control system shall provide the capability to employ automated mechanisms for backup.",
+      "securityLevel": "SL3"
+    },
+    {
+      "id": "SR 7.4",
+      "name": "Control system recovery and reconstitution",
+      "family": "FR7 - Resource Availability",
+      "description": "The control system shall provide the capability to support recovery and reconstitution to a known secure state after a disruption or failure.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 7.5",
+      "name": "Emergency power",
+      "family": "FR7 - Resource Availability",
+      "description": "The control system shall provide the capability to support the operation of an emergency power source that permits an orderly shutdown while maintaining the control system in a secure state.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 7.6",
+      "name": "Network and security configuration settings",
+      "family": "FR7 - Resource Availability",
+      "description": "The control system shall provide the capability to be configured according to recommended network and security configurations as described by the control system supplier, in an easily discoverable manner.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 7.6 RE 1",
+      "name": "Machine-readable reporting of current security settings",
+      "family": "FR7 - Resource Availability",
+      "description": "The control system shall provide the capability to report current security settings in a machine-readable format.",
+      "securityLevel": "SL2"
+    },
+    {
+      "id": "SR 7.7",
+      "name": "Least functionality",
+      "family": "FR7 - Resource Availability",
+      "description": "The control system shall provide the capability to specifically restrict the use of unnecessary functions, ports, protocols, and services.",
+      "securityLevel": "SL1"
+    },
+    {
+      "id": "SR 7.8",
+      "name": "Control system component inventory",
+      "family": "FR7 - Resource Availability",
+      "description": "The control system shall provide the capability to report a list of installed components and their associated properties.",
+      "securityLevel": "SL2"
+    }
+  ]
+}

@@ -1,0 +1,179 @@
+name: Build macOS installer
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build-macos:
+    runs-on: macos-13
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.20.5'
+
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin,x86_64-apple-darwin
+
+      - name: Install JS dependencies (root)
+        run: npm ci
+
+      - name: Install JS dependencies (server)
+        run: |
+          cd server
+          npm ci
+
+      - name: Stage portable Node runtime
+        shell: bash
+        run: |
+          set -e
+          mkdir -p src-tauri/resources/node
+          
+          # Check if Node is already staged
+          if [[ -f "src-tauri/resources/node/node" ]]; then
+            echo "Portable Node already staged."
+            exit 0
+          fi
+          
+          # Define Node.js version to bundle (matching project requirements)
+          NODE_VERSION="v18.20.5"
+          
+          echo "Downloading Node.js for macOS..."
+          # Download Node.js for macOS x64
+          curl -L "https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-darwin-x64.tar.gz" -o node-macos.tar.gz
+          tar -xzf node-macos.tar.gz
+          cp "node-${NODE_VERSION}-darwin-x64/bin/node" src-tauri/resources/node/node
+          chmod +x src-tauri/resources/node/node
+          echo "✓ Node.js ${NODE_VERSION} for macOS bundled successfully"
+          
+          # Verify the binary works
+          src-tauri/resources/node/node --version || echo "Warning: Node binary verification failed"
+
+      - name: Build (React)
+        env:
+          CI: false
+        run: npm run build
+
+      - name: Stage server for Tauri
+        shell: bash
+        run: |
+          # Create resources directory
+          mkdir -p src-tauri/resources
+          
+          # Copy server to server_dist
+          cp -r server src-tauri/resources/server_dist
+          
+          # Copy security knowledge base if it exists
+          if [ -d "public/data/security-knowledge-base" ]; then
+            mkdir -p src-tauri/resources/server_dist/data/security-knowledge-base
+            cp -r public/data/security-knowledge-base/* src-tauri/resources/server_dist/data/security-knowledge-base/
+            echo "Security knowledge base copied"
+          else
+            echo "WARNING: Security knowledge base not found"
+          fi
+          
+          echo "Server staged successfully"
+
+      - name: Build (Tauri)
+        shell: bash
+        run: |
+          # Build universal binary
+          npm run tauri:build -- --target universal-apple-darwin
+
+      - name: Create DMG manually if Tauri DMG creation fails
+        if: always()
+        shell: bash
+        run: |
+          # Check if .app exists but DMG doesn't
+          APP_PATH=$(find src-tauri/target -name "ContextCypher.app" -type d | head -1)
+          DMG_PATH=$(find src-tauri/target -name "*.dmg" | head -1)
+          
+          if [ -n "$APP_PATH" ] && [ -z "$DMG_PATH" ]; then
+            echo "Found .app but no DMG, creating DMG manually..."
+            
+            # Create a temporary directory for DMG creation
+            TEMP_DIR=$(mktemp -d)
+            cp -R "$APP_PATH" "$TEMP_DIR/"
+            
+            # Create DMG using hdiutil
+            DMG_NAME="ContextCypher_0.3.0_universal.dmg"
+            hdiutil create -volname "ContextCypher" -srcfolder "$TEMP_DIR" -ov -format UDZO "$DMG_NAME"
+            
+            # Move to the expected location
+            mkdir -p "$(dirname "$APP_PATH")/dmg"
+            mv "$DMG_NAME" "$(dirname "$APP_PATH")/dmg/"
+            
+            echo "✓ DMG created manually at $(dirname "$APP_PATH")/dmg/$DMG_NAME"
+            
+            # Cleanup
+            rm -rf "$TEMP_DIR"
+          fi
+
+      - name: Smoke test macOS app
+        continue-on-error: true
+        shell: bash
+        run: |
+          # Find the .app bundle
+          APP_PATH=$(find src-tauri/target -name "ContextCypher.app" -type d | head -1)
+          
+          if [ -z "$APP_PATH" ]; then
+            echo "Error: Could not find ContextCypher.app"
+            exit 1
+          fi
+          
+          echo "Found app at: $APP_PATH"
+          
+          # Test 1: Check if app bundle is valid
+          echo "Checking app bundle structure..."
+          # The executable is named 'ai-threat-modeler', not 'ContextCypher'
+          if [ ! -f "$APP_PATH/Contents/MacOS/ai-threat-modeler" ]; then
+            echo "Error: App executable not found at Contents/MacOS/ai-threat-modeler"
+            exit 1
+          fi
+          
+          echo "✓ Found executable at: $APP_PATH/Contents/MacOS/ai-threat-modeler"
+          
+          # Test 2: Check code signature (if signed)
+          echo "Checking code signature..."
+          codesign --verify "$APP_PATH" 2>/dev/null || echo "App is not signed (this is OK for CI builds)"
+          
+          # Test 3: Launch the app briefly and check if it starts
+          echo "Attempting to launch app..."
+          # Start the app in background
+          "$APP_PATH/Contents/MacOS/ai-threat-modeler" &
+          APP_PID=$!
+          
+          # Give it 10 seconds to start
+          sleep 10
+          
+          # Check if process is still running
+          if ps -p $APP_PID > /dev/null; then
+            echo "✓ App launched successfully and is running"
+            # Kill the app
+            kill $APP_PID 2>/dev/null || true
+          else
+            echo "✗ App crashed or failed to start"
+            exit 1
+          fi
+          
+          echo "Smoke tests passed!"
+
+      - name: Upload installers
+        uses: actions/upload-artifact@v4
+        with:
+          name: installers-macos
+          path: |
+            src-tauri/target/*/release/bundle/**/*.dmg
+            src-tauri/target/*/release/bundle/**/*.app
+            src-tauri/target/release/bundle/**/*.dmg
+            src-tauri/target/release/bundle/**/*.app
+          if-no-files-found: warn

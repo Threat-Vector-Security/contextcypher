@@ -1,0 +1,260 @@
+{
+  "resultsPerPage": 5,
+  "startIndex": 0,
+  "totalResults": 5,
+  "format": "NVD_CVE",
+  "version": "2.0",
+  "timestamp": "2024-01-15T12:00:00.000",
+  "vulnerabilities": [
+    {
+      "cve": {
+        "id": "CVE-2017-15715",
+        "sourceIdentifier": "security@apache.org",
+        "published": "2018-03-26T15:29:00.263",
+        "lastModified": "2023-11-07T02:40:03.750",
+        "vulnStatus": "Modified",
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "In Apache httpd 2.4.0 to 2.4.29, the expression specified in <FilesMatch> could match '$' to a newline character in a malicious filename, rather than matching only the end of the filename. This could be exploited in environments where uploads of some files are externally blocked, but only by matching the trailing portion of the filename."
+          }
+        ],
+        "metrics": {
+          "cvssMetricV31": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "3.1",
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+                "baseScore": 7.5,
+                "baseSeverity": "HIGH"
+              }
+            }
+          ]
+        },
+        "configurations": [
+          {
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*",
+                    "versionStartIncluding": "2.4.0",
+                    "versionEndIncluding": "2.4.29",
+                    "matchCriteriaId": "APACHE-HTTPD-2.4.0-2.4.29"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "cve": {
+        "id": "CVE-2017-7659",
+        "sourceIdentifier": "security@apache.org",
+        "published": "2017-06-20T01:29:00.237",
+        "lastModified": "2021-06-06T11:15:09.477",
+        "vulnStatus": "Modified",
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "A maliciously constructed HTTP/2 request could cause mod_http2 in Apache HTTP Server 2.4.25 to dereference a NULL pointer and crash the server process."
+          }
+        ],
+        "metrics": {
+          "cvssMetricV30": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "3.0",
+                "vectorString": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                "baseScore": 7.5,
+                "baseSeverity": "HIGH"
+              }
+            }
+          ]
+        },
+        "configurations": [
+          {
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:apache:http_server:2.4.25:*:*:*:*:*:*:*",
+                    "matchCriteriaId": "APACHE-HTTPD-2.4.25"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "cve": {
+        "id": "CVE-2017-7668",
+        "sourceIdentifier": "security@apache.org",
+        "published": "2017-06-20T01:29:00.300",
+        "lastModified": "2023-02-12T23:31:00.000",
+        "vulnStatus": "Modified",
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "The HTTP strict parsing in Apache Tomcat 8.5.x before 8.5.16 does not correctly handle invalid characters in HTTP request headers which could lead to misinterpretation of a request."
+          }
+        ],
+        "metrics": {
+          "cvssMetricV30": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "3.0",
+                "vectorString": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+                "baseScore": 7.5,
+                "baseSeverity": "HIGH"
+              }
+            }
+          ]
+        },
+        "configurations": [
+          {
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:apache:tomcat:*:*:*:*:*:*:*:*",
+                    "versionStartIncluding": "8.5.0",
+                    "versionEndExcluding": "8.5.16",
+                    "matchCriteriaId": "APACHE-TOMCAT-8.5.0-8.5.15"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "cve": {
+        "id": "CVE-2016-6662",
+        "sourceIdentifier": "cve@mitre.org",
+        "published": "2016-09-20T18:59:01.223",
+        "lastModified": "2023-02-12T23:25:00.000",
+        "vulnStatus": "Modified",
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "Oracle MySQL through 5.5.52, 5.6.x through 5.6.33, and 5.7.x through 5.7.15 allows local users to create arbitrary configurations and bypass certain protection mechanisms via a crafted my.cnf file."
+          }
+        ],
+        "metrics": {
+          "cvssMetricV30": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "3.0",
+                "vectorString": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+                "baseScore": 9.8,
+                "baseSeverity": "CRITICAL"
+              }
+            }
+          ]
+        },
+        "configurations": [
+          {
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:oracle:mysql:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "5.5.52",
+                    "matchCriteriaId": "MYSQL-5.5.52-AND-EARLIER"
+                  },
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:oracle:mysql:*:*:*:*:*:*:*:*",
+                    "versionStartIncluding": "5.6.0",
+                    "versionEndIncluding": "5.6.33",
+                    "matchCriteriaId": "MYSQL-5.6.0-5.6.33"
+                  },
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:oracle:mysql:*:*:*:*:*:*:*:*",
+                    "versionStartIncluding": "5.7.0",
+                    "versionEndIncluding": "5.7.15",
+                    "matchCriteriaId": "MYSQL-5.7.0-5.7.15"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "cve": {
+        "id": "CVE-2017-3599",
+        "sourceIdentifier": "secalert@redhat.com",
+        "published": "2017-04-24T19:59:00.263",
+        "lastModified": "2019-10-03T00:03:26.223",
+        "vulnStatus": "Modified",
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "Vulnerability in the MySQL Server component of Oracle MySQL (subcomponent: Server: Optimizer). Supported versions that are affected are 5.6.35 and earlier. Easily exploitable vulnerability allows low privileged attacker with network access via multiple protocols to compromise MySQL Server."
+          }
+        ],
+        "metrics": {
+          "cvssMetricV30": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "3.0",
+                "vectorString": "CVSS:3.0/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+                "baseScore": 6.5,
+                "baseSeverity": "MEDIUM"
+              }
+            }
+          ]
+        },
+        "configurations": [
+          {
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:oracle:mysql:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "5.6.35",
+                    "matchCriteriaId": "MYSQL-5.6.35-AND-EARLIER"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

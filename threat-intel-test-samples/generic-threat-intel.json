@@ -1,0 +1,43 @@
+[
+  {
+    "type": "cve",
+    "cve": "CVE-2017-5638",
+    "description": "Apache Struts 2 2.3.x before 2.3.32 and 2.5.x before 2.5.10.1 allows remote attackers to execute arbitrary commands via a crafted Content-Type header",
+    "severity": "critical",
+    "cvss": 10.0,
+    "affected_products": ["Apache Struts 2.3.x", "Apache Struts 2.5.x"],
+    "timestamp": "2017-03-07T00:00:00Z"
+  },
+  {
+    "type": "ioc",
+    "indicators": [
+      {
+        "type": "ip",
+        "value": "192.168.1.100",
+        "context": "C2 server for ransomware campaign"
+      },
+      {
+        "type": "domain",
+        "value": "evil-payload.com",
+        "context": "Malware distribution site"
+      },
+      {
+        "type": "hash",
+        "value": "44d88612fea8a8f36de82e1278abb02f",
+        "context": "Ransomware payload MD5"
+      }
+    ],
+    "description": "Indicators related to ransomware campaign targeting e-commerce",
+    "severity": "high",
+    "timestamp": "2024-01-15T00:00:00Z"
+  },
+  {
+    "type": "campaign",
+    "campaign": "Operation Shopping Cart",
+    "actor": "APT29",
+    "description": "Sophisticated campaign targeting e-commerce platforms using Apache vulnerabilities",
+    "ttps": ["T1190", "T1055", "T1003"],
+    "severity": "high",
+    "timestamp": "2024-01-01T00:00:00Z"
+  }
+]

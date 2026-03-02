@@ -1,0 +1,131 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "lastUpdated": "2025-01-07T12:00:00Z",
+    "source": "Threat Intelligence Research",
+    "description": "Common threat patterns and attack vectors for offline threat modeling"
+  },
+  "patterns": [
+    {
+      "id": "TP-001",
+      "name": "Web Application SQL Injection",
+      "description": "SQL injection attacks targeting web applications with database backends",
+      "severity": "HIGH",
+      "categories": ["injection", "web-application"],
+      "indicators": [
+        "web-server",
+        "database",
+        "user-input",
+        "sql"
+      ],
+      "mitreTechniques": ["T1190"],
+      "commonTargets": [
+        "web-server",
+        "database",
+        "web-application"
+      ],
+      "mitigations": [
+        "Input validation",
+        "Parameterized queries",
+        "Database access controls",
+        "Web application firewall"
+      ]
+    },
+    {
+      "id": "TP-002",
+      "name": "Cross-Zone Network Attack",
+      "description": "Attacks that traverse network security zones without proper authorization",
+      "severity": "HIGH",
+      "categories": ["lateral-movement", "network"],
+      "indicators": [
+        "cross-zone-connection",
+        "unencrypted-traffic",
+        "network-traversal"
+      ],
+      "mitreTechniques": ["T1021", "T1018"],
+      "commonTargets": [
+        "network-connection",
+        "firewall",
+        "network-zone"
+      ],
+      "mitigations": [
+        "Network segmentation",
+        "Firewall rules",
+        "Traffic encryption",
+        "Network monitoring"
+      ]
+    },
+    {
+      "id": "TP-003",
+      "name": "Privilege Escalation via Service Account",
+      "description": "Attackers exploit service accounts to gain elevated privileges",
+      "severity": "HIGH",
+      "categories": ["privilege-escalation", "credential-access"],
+      "indicators": [
+        "service-account",
+        "elevated-privileges",
+        "authentication-bypass"
+      ],
+      "mitreTechniques": ["T1078", "T1055"],
+      "commonTargets": [
+        "service-account",
+        "authentication-server",
+        "privileged-service"
+      ],
+      "mitigations": [
+        "Principle of least privilege",
+        "Service account rotation",
+        "Multi-factor authentication",
+        "Privileged access management"
+      ]
+    },
+    {
+      "id": "TP-004",
+      "name": "Remote Desktop Protocol (RDP) Brute Force",
+      "description": "Brute force attacks targeting RDP services",
+      "severity": "MEDIUM",
+      "categories": ["credential-access", "remote-access"],
+      "indicators": [
+        "rdp-service",
+        "brute-force",
+        "remote-access"
+      ],
+      "mitreTechniques": ["T1110", "T1021"],
+      "commonTargets": [
+        "windows-server",
+        "rdp-service",
+        "remote-access"
+      ],
+      "mitigations": [
+        "Account lockout policies",
+        "Multi-factor authentication",
+        "Network access control",
+        "VPN requirement"
+      ]
+    },
+    {
+      "id": "TP-005",
+      "name": "API Authentication Bypass",
+      "description": "Bypassing API authentication mechanisms to gain unauthorized access",
+      "severity": "HIGH",
+      "categories": ["authentication-bypass", "api"],
+      "indicators": [
+        "api-endpoint",
+        "authentication-bypass",
+        "unauthorized-access"
+      ],
+      "mitreTechniques": ["T1190", "T1078"],
+      "commonTargets": [
+        "api-gateway",
+        "rest-api",
+        "web-service"
+      ],
+      "mitigations": [
+        "API authentication",
+        "Rate limiting",
+        "API gateway",
+        "OAuth implementation"
+      ]
+    }
+  ]
+} 

@@ -1,0 +1,55 @@
+{
+  "type": "bundle",
+  "id": "bundle--example",
+  "spec_version": "2.1",
+  "created": "2025-01-19T12:00:00.000Z",
+  "modified": "2025-01-19T12:00:00.000Z",
+  "objects": [
+    {
+      "type": "intrusion-set",
+      "id": "intrusion-set--apt29",
+      "created": "2025-01-19T12:00:00.000Z",
+      "modified": "2025-01-19T12:00:00.000Z",
+      "name": "APT29",
+      "description": "APT29 is a Russian state-sponsored threat group",
+      "aliases": ["Cozy Bear", "The Dukes"],
+      "labels": ["apt"],
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "G0016"
+        }
+      ]
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--t1566-001",
+      "created": "2025-01-19T12:00:00.000Z",
+      "modified": "2025-01-19T12:00:00.000Z",
+      "name": "Spearphishing Attachment",
+      "description": "Adversaries may send spearphishing emails with a malicious attachment",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "initial-access"
+        }
+      ],
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1566.001"
+        }
+      ]
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--example1",
+      "created": "2025-01-19T12:00:00.000Z",
+      "modified": "2025-01-19T12:00:00.000Z",
+      "relationship_type": "uses",
+      "source_ref": "intrusion-set--apt29",
+      "target_ref": "attack-pattern--t1566-001",
+      "description": "APT29 uses spearphishing attachments"
+    }
+  ]
+}

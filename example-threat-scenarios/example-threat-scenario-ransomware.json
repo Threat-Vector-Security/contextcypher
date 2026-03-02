@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "name": "Ransomware Groups Mass Exploitation Scenario",
+  "description": "Analysis focused on common ransomware group tactics exploiting public-facing applications",
+  "targetedAnalysis": {
+    "threatActors": "Various Ransomware Groups (LockBit, BlackCat/ALPHV, Clop, Play) - Financially motivated cybercriminals using ransomware-as-a-service models",
+    "ttps": "T1190 Exploit Public-Facing Application, T1133 External Remote Services, T1021.001 Remote Desktop Protocol, T1486 Data Encrypted for Impact, T1490 Inhibit System Recovery, T1489 Service Stop, T1003 OS Credential Dumping",
+    "vulnerabilities": "ProxyLogon/ProxyShell (Exchange), Log4j (CVE-2021-44228), Fortinet VPN vulnerabilities, Citrix Bleed (CVE-2023-4966), MOVEit Transfer SQL injection, ESXi ransomware vulnerabilities, Exposed RDP services",
+    "focusAreas": "Internet-facing applications, VPN gateways, Remote access services, Backup systems, Virtualization infrastructure (VMware ESXi), File transfer applications",
+    "scenarioDescription": "Ransomware groups continuously scan for and exploit vulnerabilities in internet-facing services. They target VPNs, web applications, and remote access to gain initial access, then move laterally to encrypt critical systems. This analysis focuses on common entry points and paths to business-critical infrastructure, particularly virtualization platforms and backup systems that maximize impact."
+  },
+  "timestamp": "2024-01-15T11:00:00.000Z"
+}

@@ -1,0 +1,5 @@
+# Files to exclude from bytenode build (handled manually or not needed)
+logs/
+node_modules/.cache/
+**/*.map
+**/*.test.js

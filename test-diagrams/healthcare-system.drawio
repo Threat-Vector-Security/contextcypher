@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile version="13.6.2">
+  <diagram id="healthcare-system" name="Healthcare System">
+    <mxGraphModel dx="1426" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- External Zone -->
+        <mxCell id="ext-zone" value="External Zone" style="swimlane;fillColor=#ffe6e6;strokeColor=#ff0000;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="740" height="140" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="patients" value="Patients" style="shape=actor;fillColor=#ffffff;" vertex="1" parent="ext-zone">
+          <mxGeometry x="50" y="40" width="60" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="doctors" value="Healthcare Providers" style="shape=actor;fillColor=#ffffff;" vertex="1" parent="ext-zone">
+          <mxGeometry x="200" y="40" width="60" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="insurance" value="Insurance Companies" style="shape=actor;fillColor=#ffffff;" vertex="1" parent="ext-zone">
+          <mxGeometry x="350" y="40" width="60" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- DMZ Zone -->
+        <mxCell id="dmz-zone" value="DMZ Zone" style="swimlane;fillColor=#e6f3ff;strokeColor=#0066cc;" vertex="1" parent="1">
+          <mxGeometry x="40" y="200" width="740" height="140" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="portal" value="Patient Portal" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#99ccff;" vertex="1" parent="dmz-zone">
+          <mxGeometry x="50" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="api-gateway" value="API Gateway" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#99ccff;" vertex="1" parent="dmz-zone">
+          <mxGeometry x="310" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="vpn" value="VPN Gateway" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#99ccff;" vertex="1" parent="dmz-zone">
+          <mxGeometry x="570" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Application Zone -->
+        <mxCell id="app-zone" value="Application Zone" style="swimlane;fillColor=#e6ffe6;strokeColor=#00cc00;" vertex="1" parent="1">
+          <mxGeometry x="40" y="360" width="740" height="200" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="ehr" value="EHR System" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#99ff99;" vertex="1" parent="app-zone">
+          <mxGeometry x="50" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="appointment" value="Appointment System" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#99ff99;" vertex="1" parent="app-zone">
+          <mxGeometry x="200" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="billing" value="Billing System" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#99ff99;" vertex="1" parent="app-zone">
+          <mxGeometry x="350" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="imaging" value="Medical Imaging" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#99ff99;" vertex="1" parent="app-zone">
+          <mxGeometry x="50" y="120" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="lab" value="Lab Results System" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#99ff99;" vertex="1" parent="app-zone">
+          <mxGeometry x="200" y="120" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="pharmacy" value="Pharmacy System" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#99ff99;" vertex="1" parent="app-zone">
+          <mxGeometry x="350" y="120" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="hl7" value="HL7 Interface Engine" style="hexagon;whiteSpace=wrap;html=1;fillColor=#ccffcc;" vertex="1" parent="app-zone">
+          <mxGeometry x="550" y="70" width="140" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Data Zone -->
+        <mxCell id="data-zone" value="Data Zone (HIPAA Compliant)" style="swimlane;fillColor=#fff0e6;strokeColor=#ff9900;" vertex="1" parent="1">
+          <mxGeometry x="40" y="580" width="740" height="140" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="patient-db" value="Patient Database" style="shape=cylinder;whiteSpace=wrap;html=1;fillColor=#ffcc99;" vertex="1" parent="data-zone">
+          <mxGeometry x="70" y="40" width="100" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="clinical-db" value="Clinical Data Warehouse" style="shape=cylinder;whiteSpace=wrap;html=1;fillColor=#ffcc99;" vertex="1" parent="data-zone">
+          <mxGeometry x="220" y="40" width="100" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="imaging-storage" value="PACS Storage" style="shape=cylinder;whiteSpace=wrap;html=1;fillColor=#ffcc99;" vertex="1" parent="data-zone">
+          <mxGeometry x="370" y="40" width="100" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="backup" value="Backup Storage" style="shape=cylinder;whiteSpace=wrap;html=1;fillColor=#ffcc99;" vertex="1" parent="data-zone">
+          <mxGeometry x="520" y="40" width="100" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Connections -->
+        <mxCell id="edge1" edge="1" parent="1" source="patients" target="portal">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edge2" edge="1" parent="1" source="doctors" target="vpn">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edge3" edge="1" parent="1" source="insurance" target="api-gateway">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edge4" edge="1" parent="1" source="portal" target="ehr">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edge5" edge="1" parent="1" source="api-gateway" target="billing">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edge6" edge="1" parent="1" source="vpn" target="hl7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edge7" edge="1" parent="1" source="ehr" target="patient-db">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edge8" edge="1" parent="1" source="imaging" target="imaging-storage">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edge9" edge="1" parent="1" source="hl7" target="ehr">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edge10" edge="1" parent="1" source="hl7" target="lab">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edge11" edge="1" parent="1" source="hl7" target="pharmacy">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

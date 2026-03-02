@@ -1,0 +1,9 @@
+{
+  "latest": "1.9.5",
+  "downloadUrl": "https://www.npmjs.com/package/@threatvectorsecurity/contextcypher",
+  "releaseDate": "2026-02-28",
+  "notes": "Version 1.9.5 - Various bug fixes and improvements.",
+  "minimumVersion": "1.0.0",
+  "npmInstall": "npm install -g @threatvectorsecurity/contextcypher",
+  "npmUpdate": "npm update -g @threatvectorsecurity/contextcypher"
+}

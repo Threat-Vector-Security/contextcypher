@@ -1,0 +1,1 @@
+# Schema module for LangExtract service

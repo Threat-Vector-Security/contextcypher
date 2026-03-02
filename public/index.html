@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>ContextCypher</title> <!-- AI-Powered Architecture & Security Modeler -->
+    <link rel="icon" href="%PUBLIC_URL%/favicon-32x32.png" /> <!-- Custom favicon -->
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="ContextCypher - Intelligent system architecture and security modeling with AI-powered contextual analysis"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" crossorigin="use-credentials" />
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script>
+      // Keep intrusive early error overlays limited to localhost development.
+      (function () {
+        var host = window.location.hostname || '';
+        var isLocal = host === 'localhost' || host === '127.0.0.1' || host === '::1';
+        if (!isLocal) return;
+
+        window.addEventListener('error', function (e) {
+          console.error('Global error:', e.error);
+          document.body.innerHTML += '<div style="color: red; padding: 20px;">Error: ' + e.error.message + '<br>Stack: <pre>' + (e.error.stack || 'No stack trace') + '</pre></div>';
+        });
+        window.addEventListener('unhandledrejection', function (e) {
+          console.error('Unhandled promise rejection:', e.reason);
+          document.body.innerHTML += '<div style="color: orange; padding: 20px;">Unhandled Promise: ' + e.reason + '</div>';
+        });
+      })();
+    </script>
+  </body>
+</html>

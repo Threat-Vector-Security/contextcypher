@@ -1,0 +1,52 @@
+graph TD
+    %% E-commerce System Architecture
+    
+    subgraph "DMZ Zone"
+        WEB[Web Server<br/>nginx]
+        LB[Load Balancer<br/>HAProxy]
+    end
+    
+    subgraph "Application Zone"
+        API[API Gateway<br/>Kong]
+        APP1[App Server 1<br/>Node.js]
+        APP2[App Server 2<br/>Node.js]
+        CACHE[Redis Cache]
+    end
+    
+    subgraph "Data Zone"
+        DB[(Primary Database<br/>PostgreSQL)]
+        DB2[(Read Replica<br/>PostgreSQL)]
+        S3[Object Storage<br/>S3]
+    end
+    
+    subgraph "Integration Zone"
+        QUEUE[Message Queue<br/>RabbitMQ]
+        PAY[Payment Gateway<br/>Stripe]
+        EMAIL[Email Service<br/>SendGrid]
+    end
+    
+    %% Connections
+    USER[Internet Users] --> LB
+    LB --> WEB
+    WEB --> API
+    API --> APP1
+    API --> APP2
+    APP1 --> CACHE
+    APP2 --> CACHE
+    APP1 --> DB
+    APP2 --> DB2
+    APP1 --> QUEUE
+    QUEUE --> PAY
+    QUEUE --> EMAIL
+    APP1 --> S3
+    
+    %% Styling
+    classDef dmz fill:#ff9999
+    classDef app fill:#99ccff
+    classDef data fill:#99ff99
+    classDef integration fill:#ffcc99
+    
+    class WEB,LB dmz
+    class API,APP1,APP2,CACHE app
+    class DB,DB2,S3 data
+    class QUEUE,PAY,EMAIL integration

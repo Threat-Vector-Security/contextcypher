@@ -1,0 +1,14 @@
+apt_group,technique_id,technique_name,tactic,target_sector,confidence
+APT29,T1566.001,Spearphishing Attachment,Initial Access,Government,High
+APT29,T1078,Valid Accounts,Defense Evasion,Energy,High
+APT29,T1055,Process Injection,Privilege Escalation,Healthcare,Medium
+APT29,T1059.001,PowerShell,Execution,Think Tanks,High
+APT29,T1070.004,File Deletion,Defense Evasion,Government,Medium
+APT28,T1566.002,Spearphishing Link,Initial Access,Military,High
+APT28,T1087,Account Discovery,Discovery,Defense,High
+APT28,T1003.001,LSASS Memory,Credential Access,Government,High
+APT28,T1021.001,Remote Desktop Protocol,Lateral Movement,Aerospace,Medium
+Lazarus,T1189,Drive-by Compromise,Initial Access,Financial,High
+Lazarus,T1190,Exploit Public-Facing Application,Initial Access,Cryptocurrency,High
+Lazarus,T1053.005,Scheduled Task,Persistence,Entertainment,Medium
+Lazarus,T1055.012,Process Hollowing,Defense Evasion,Financial,High

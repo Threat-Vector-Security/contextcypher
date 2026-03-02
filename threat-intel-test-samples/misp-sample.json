@@ -1,0 +1,66 @@
+{
+  "Event": {
+    "id": "1",
+    "orgc_id": "1",
+    "org_id": "1",
+    "date": "2024-01-15",
+    "threat_level_id": "2",
+    "info": "Malware Campaign targeting E-commerce platforms",
+    "published": true,
+    "uuid": "5f9c1234-5678-9abc-def0-123456789abc",
+    "attribute_count": "15",
+    "analysis": "2",
+    "timestamp": "1705344000",
+    "distribution": "3",
+    "publish_timestamp": "1705344000",
+    "sharing_group_id": "0",
+    "Attribute": [
+      {
+        "id": "1",
+        "type": "ip-dst",
+        "category": "Network activity",
+        "value": "192.168.1.100",
+        "comment": "C2 Server",
+        "timestamp": "1705344000",
+        "distribution": "5"
+      },
+      {
+        "id": "2",
+        "type": "md5",
+        "category": "Payload delivery",
+        "value": "44d88612fea8a8f36de82e1278abb02f",
+        "comment": "Malware hash",
+        "timestamp": "1705344000",
+        "distribution": "5"
+      },
+      {
+        "id": "3",
+        "type": "vulnerability",
+        "category": "External analysis",
+        "value": "CVE-2017-5638",
+        "comment": "Apache Struts vulnerability exploited",
+        "timestamp": "1705344000",
+        "distribution": "5"
+      },
+      {
+        "id": "4",
+        "type": "domain",
+        "category": "Network activity",
+        "value": "malicious-ecommerce.com",
+        "comment": "Phishing domain",
+        "timestamp": "1705344000",
+        "distribution": "5"
+      }
+    ],
+    "Tag": [
+      {
+        "name": "misp-galaxy:threat-actor=\"APT29\"",
+        "colour": "#ff0000"
+      },
+      {
+        "name": "type:ransomware",
+        "colour": "#00ff00"
+      }
+    ]
+  }
+}

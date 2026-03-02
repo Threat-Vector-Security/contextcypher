@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "name": "APT29 (Cozy Bear) Supply Chain Attack Scenario",
+  "description": "Analysis focused on APT29's sophisticated supply chain and cloud infrastructure attacks",
+  "targetedAnalysis": {
+    "threatActors": "APT29 (Cozy Bear, The Dukes, YTTRIUM) - Russian state-sponsored threat group targeting government, diplomatic, and technology organizations",
+    "ttps": "T1195 Supply Chain Compromise, T1199 Trusted Relationship, T1078.004 Valid Accounts: Cloud Accounts, T1550.001 Use Alternate Authentication Material: Application Access Token, T1606 Forge Web Credentials, T1484 Domain Policy Modification, T1098.001 Additional Cloud Credentials",
+    "vulnerabilities": "SolarWinds Orion vulnerabilities, Log4j (CVE-2021-44228), ProxyShell (CVE-2021-34473), Azure AD misconfigurations, Weak service principal credentials, Missing cloud audit logging",
+    "focusAreas": "CI/CD pipelines, Software supply chain, Cloud service principals, Azure/AWS admin interfaces, Development environments, Source code repositories",
+    "scenarioDescription": "APT29 is known for sophisticated supply chain attacks and living-off-the-land techniques in cloud environments. They exploit trust relationships and compromise development infrastructure to gain persistent access. This scenario examines potential attack paths through development and cloud management systems based on their documented techniques."
+  },
+  "timestamp": "2024-01-15T10:30:00.000Z"
+}

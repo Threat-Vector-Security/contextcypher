@@ -1,0 +1,87 @@
+digraph MicroservicesArchitecture {
+    // Graph properties
+    rankdir=TB;
+    compound=true;
+    node [shape=box, style="rounded,filled", fontname="Arial"];
+    edge [fontname="Arial"];
+    
+    // Define clusters for security zones
+    subgraph cluster_external {
+        label="External Zone";
+        style=filled;
+        fillcolor="#ffe6e6";
+        
+        Users [label="Web Users", shape=ellipse, fillcolor="#ffffff"];
+        MobileApp [label="Mobile App", shape=ellipse, fillcolor="#ffffff"];
+    }
+    
+    subgraph cluster_dmz {
+        label="DMZ Zone";
+        style=filled;
+        fillcolor="#e6f3ff";
+        
+        CDN [label="CDN\n(CloudFront)", fillcolor="#99ccff"];
+        WAF [label="Web Application\nFirewall", fillcolor="#99ccff"];
+        APIGateway [label="API Gateway\n(Kong)", fillcolor="#99ccff"];
+    }
+    
+    subgraph cluster_app {
+        label="Application Zone";
+        style=filled;
+        fillcolor="#e6ffe6";
+        
+        AuthService [label="Auth Service\n(Node.js)", fillcolor="#99ff99"];
+        UserService [label="User Service\n(Node.js)", fillcolor="#99ff99"];
+        ProductService [label="Product Service\n(Java)", fillcolor="#99ff99"];
+        OrderService [label="Order Service\n(Python)", fillcolor="#99ff99"];
+        PaymentService [label="Payment Service\n(Go)", fillcolor="#99ff99"];
+        NotificationService [label="Notification Service\n(Node.js)", fillcolor="#99ff99"];
+        
+        ServiceMesh [label="Service Mesh\n(Istio)", shape=hexagon, fillcolor="#ccffcc"];
+    }
+    
+    subgraph cluster_data {
+        label="Data Zone";
+        style=filled;
+        fillcolor="#fff0e6";
+        
+        UserDB [label="User Database\n(MongoDB)", shape=cylinder, fillcolor="#ffcc99"];
+        ProductDB [label="Product Database\n(PostgreSQL)", shape=cylinder, fillcolor="#ffcc99"];
+        OrderDB [label="Order Database\n(PostgreSQL)", shape=cylinder, fillcolor="#ffcc99"];
+        Cache [label="Redis Cache", shape=cylinder, fillcolor="#ffcc99"];
+        MessageQueue [label="Message Queue\n(RabbitMQ)", shape=box3d, fillcolor="#ffcc99"];
+    }
+    
+    // Connections
+    Users -> CDN;
+    MobileApp -> APIGateway;
+    
+    CDN -> WAF;
+    WAF -> APIGateway;
+    
+    APIGateway -> ServiceMesh;
+    
+    ServiceMesh -> AuthService;
+    ServiceMesh -> UserService;
+    ServiceMesh -> ProductService;
+    ServiceMesh -> OrderService;
+    ServiceMesh -> PaymentService;
+    ServiceMesh -> NotificationService;
+    
+    AuthService -> UserDB;
+    AuthService -> Cache;
+    
+    UserService -> UserDB;
+    ProductService -> ProductDB;
+    OrderService -> OrderDB;
+    
+    PaymentService -> MessageQueue;
+    NotificationService -> MessageQueue;
+    
+    OrderService -> Cache;
+    ProductService -> Cache;
+    
+    // External connections
+    PaymentService -> "External Payment Provider" [style=dashed, color=red];
+    NotificationService -> "Email Service (SendGrid)" [style=dashed, color=red];
+}

@@ -1,0 +1,859 @@
+{
+  "nodes": [
+    {
+      "id": "internet-zone",
+      "type": "securityZone",
+      "position": { "x": 50, "y": 50 },
+      "data": {
+        "label": "Internet",
+        "zoneType": "Internet",
+        "description": "Public Internet"
+      },
+      "style": {
+        "width": 650,
+        "height": 1000,
+        "background": "#00E67620",
+        "zIndex": -1
+      }
+    },
+    {
+      "id": "office-zone",
+      "type": "securityZone",
+      "position": { "x": 820, "y": 50 },
+      "data": {
+        "label": "Office Network",
+        "zoneType": "Internal",
+        "description": "Corporate Office Network Infrastructure"
+      },
+      "style": {
+        "width": 650,
+        "height": 1000,
+        "background": "#2196F320",
+        "zIndex": -1
+      }
+    },
+    {
+      "id": "datacenter-zone",
+      "type": "securityZone",
+      "position": { "x": 1590, "y": 50 },
+      "data": {
+        "label": "Data Center Network",
+        "zoneType": "Internal",
+        "description": "On-premises Data Center Network"
+      },
+      "style": {
+        "width": 650,
+        "height": 1000,
+        "background": "#2196F320",
+        "zIndex": -1
+      }
+    },
+    {
+      "id": "cloud-corp-zone",
+      "type": "securityZone",
+      "position": { "x": 2360, "y": 50 },
+      "data": {
+        "label": "Cloud Account - Corporate",
+        "zoneType": "Cloud",
+        "description": "Corporate Cloud Account"
+      },
+      "style": {
+        "width": 650,
+        "height": 1000,
+        "background": "#00BCD420",
+        "zIndex": -1
+      }
+    },
+    {
+      "id": "cloud-eng-zone",
+      "type": "securityZone",
+      "position": { "x": 3130, "y": 50 },
+      "data": {
+        "label": "Cloud Account - Engineering",
+        "zoneType": "Cloud",
+        "description": "Engineering Cloud Account"
+      },
+      "style": {
+        "width": 650,
+        "height": 1000,
+        "background": "#00BCD420",
+        "zIndex": -1
+      }
+    },
+    {
+      "id": "external-system-zone",
+      "type": "securityZone",
+      "position": { "x": 3900, "y": 50 },
+      "data": {
+        "label": "External Integration System",
+        "zoneType": "Restricted",
+        "description": "External Partner Integration System"
+      },
+      "style": {
+        "width": 650,
+        "height": 1000,
+        "background": "#F4433620",
+        "zIndex": -1
+      }
+    },
+    {
+      "id": "customer-01",
+      "type": "dfdActor",
+      "position": { "x": 250, "y": 200 },
+      "data": {
+        "label": "External Customer",
+        "actorType": "End User Customer",
+        "zone": "Internet",
+        "description": "Customer submitting online forms",
+        "protocols": ["HTTPS"],
+        "shape": "circle"
+      }
+    },
+    {
+      "id": "contractor-02",
+      "type": "dfdActor",
+      "position": { "x": 250, "y": 350 },
+      "data": {
+        "label": "External Contractor",
+        "actorType": "Business Partner",
+        "zone": "Internet",
+        "description": "Contractor submitting work forms",
+        "protocols": ["HTTPS"],
+        "shape": "circle"
+      }
+    },
+    {
+      "id": "staff-03",
+      "type": "dfdActor",
+      "position": { "x": 250, "y": 500 },
+      "data": {
+        "label": "Internal Staff",
+        "actorType": "Employee User",
+        "zone": "Internet",
+        "description": "Staff accessing internal systems",
+        "protocols": ["HTTPS"],
+        "shape": "circle"
+      }
+    },
+    {
+      "id": "notification-service",
+      "type": "dfdActor",
+      "position": { "x": 250, "y": 750 },
+      "data": {
+        "label": "Third-party Notification Service",
+        "actorType": "External Service Provider",
+        "zone": "Internet",
+        "description": "External notification service",
+        "protocols": ["HTTPS"],
+        "shape": "circle"
+      }
+    },
+    {
+      "id": "customer-email",
+      "type": "dfdActor",
+      "position": { "x": 250, "y": 900 },
+      "data": {
+        "label": "Email Recipients",
+        "actorType": "Email Users",
+        "zone": "Internet",
+        "description": "Users receiving email notifications",
+        "protocols": ["SMTP", "HTTPS"],
+        "shape": "circle"
+      }
+    },
+    {
+      "id": "contractor-portal",
+      "type": "dfdProcess",
+      "position": { "x": 1020, "y": 350 },
+      "data": {
+        "label": "Contractor Portal",
+        "processType": "Web Portal Application",
+        "zone": "Office Network",
+        "description": "Portal for contractor submissions",
+        "technology": "Web Application Server",
+        "protocols": ["HTTPS"],
+        "dataClassification": "Internal",
+        "shape": "rectangle"
+      }
+    },
+    {
+      "id": "internal-portal",
+      "type": "dfdProcess",
+      "position": { "x": 1020, "y": 500 },
+      "data": {
+        "label": "Internal Staff Portal",
+        "processType": "Employee Portal",
+        "zone": "Office Network",
+        "description": "Internal staff management portal",
+        "technology": "Web Application Server",
+        "protocols": ["HTTPS"],
+        "dataClassification": "Internal",
+        "shape": "rectangle"
+      }
+    },
+    {
+      "id": "api-service",
+      "type": "dfdProcess",
+      "position": { "x": 1020, "y": 650 },
+      "data": {
+        "label": "REST API Service",
+        "processType": "API Gateway",
+        "zone": "Office Network",
+        "description": "RESTful API service gateway",
+        "technology": "API Gateway",
+        "protocols": ["HTTPS", "REST"],
+        "dataClassification": "Internal",
+        "shape": "rectangle"
+      }
+    },
+    {
+      "id": "email-gateway",
+      "type": "dfdProcess",
+      "position": { "x": 1020, "y": 850 },
+      "data": {
+        "label": "Email Service Gateway",
+        "processType": "Email Server",
+        "zone": "Office Network",
+        "description": "Email service for notifications",
+        "technology": "SMTP Gateway",
+        "protocols": ["SMTP", "TLS"],
+        "dataClassification": "Internal",
+        "shape": "rectangle"
+      }
+    },
+    {
+      "id": "portal-database",
+      "type": "dfdDataStore",
+      "position": { "x": 1790, "y": 200 },
+      "data": {
+        "label": "Portal Database",
+        "storeType": "Relational Database",
+        "zone": "Data Center Network",
+        "description": "Main portal database",
+        "technology": "SQL Database",
+        "encryption": "atRest",
+        "dataClassification": "Sensitive",
+        "shape": "cylinder"
+      }
+    },
+    {
+      "id": "esb-service",
+      "type": "dfdProcess",
+      "position": { "x": 1790, "y": 500 },
+      "data": {
+        "label": "Enterprise Service Bus",
+        "processType": "Message Broker",
+        "zone": "Data Center Network",
+        "description": "Enterprise service bus for message routing",
+        "technology": "ESB Platform",
+        "protocols": ["JMS", "HTTPS"],
+        "dataClassification": "Internal",
+        "shape": "rectangle"
+      }
+    },
+    {
+      "id": "portal-daemon",
+      "type": "dfdProcess",
+      "position": { "x": 1790, "y": 350 },
+      "data": {
+        "label": "Portal Background Service",
+        "processType": "Background Processing Service",
+        "zone": "Data Center Network",
+        "description": "Portal background processing daemon",
+        "technology": "Service Daemon",
+        "protocols": ["JDBC", "TCP"],
+        "dataClassification": "Internal",
+        "shape": "rectangle"
+      }
+    },
+    {
+      "id": "cloud-dms",
+      "type": "dfdProcess",
+      "position": { "x": 2560, "y": 750 },
+      "data": {
+        "label": "Database Migration Service",
+        "processType": "Data Replication Service",
+        "zone": "Cloud VPC",
+        "description": "Cloud database migration and sync service",
+        "technology": "Cloud DMS",
+        "protocols": ["TLS"],
+        "dataClassification": "Sensitive",
+        "shape": "rectangle"
+      }
+    },
+    {
+      "id": "integration-api",
+      "type": "dfdProcess",
+      "position": { "x": 2560, "y": 200 },
+      "data": {
+        "label": "Integration System API",
+        "processType": "Integration Service",
+        "zone": "Cloud Account - Corporate",
+        "description": "System integration API service",
+        "technology": "Cloud Compute Instance",
+        "protocols": ["HTTPS"],
+        "dataClassification": "Internal",
+        "shape": "rectangle"
+      }
+    },
+    {
+      "id": "grid-control-api",
+      "type": "dfdProcess",
+      "position": { "x": 2560, "y": 350 },
+      "data": {
+        "label": "Process Control API",
+        "processType": "Control System API",
+        "zone": "Cloud Direct Connect Gateway",
+        "description": "Process control and monitoring API",
+        "technology": "API Gateway",
+        "protocols": ["HTTPS"],
+        "dataClassification": "Internal",
+        "shape": "rectangle"
+      }
+    },
+    {
+      "id": "container-service",
+      "type": "dfdProcess",
+      "position": { "x": 2560, "y": 500 },
+      "data": {
+        "label": "Container Orchestration Service",
+        "processType": "Container Platform",
+        "zone": "Cloud Direct Connect Gateway",
+        "description": "Container orchestration platform",
+        "technology": "Container Service",
+        "protocols": ["HTTPS"],
+        "dataClassification": "Internal",
+        "shape": "rectangle"
+      }
+    },
+    {
+      "id": "message-broker-corp",
+      "type": "dfdProcess",
+      "position": { "x": 2760, "y": 600 },
+      "data": {
+        "label": "Message Broker - Corporate",
+        "processType": "Event Streaming Platform",
+        "zone": "Cloud Account - Corporate",
+        "description": "Corporate message broker service",
+        "technology": "Managed Streaming Service",
+        "protocols": ["Kafka"],
+        "dataClassification": "Internal",
+        "shape": "rectangle"
+      }
+    },
+    {
+      "id": "data-replicator",
+      "type": "dfdProcess",
+      "position": { "x": 2760, "y": 750 },
+      "data": {
+        "label": "Data Replication Service",
+        "processType": "Data Mirror Service",
+        "zone": "Cloud Account - Corporate",
+        "description": "Cross-account data replication",
+        "technology": "Data Replication Tool",
+        "protocols": ["Kafka"],
+        "dataClassification": "Internal",
+        "shape": "rectangle"
+      }
+    },
+    {
+      "id": "message-broker-eng",
+      "type": "dfdProcess",
+      "position": { "x": 3330, "y": 600 },
+      "data": {
+        "label": "Message Broker - Engineering",
+        "processType": "Event Streaming Platform",
+        "zone": "Cloud Account - Engineering",
+        "description": "Engineering message broker service",
+        "technology": "Managed Streaming Service",
+        "protocols": ["Kafka"],
+        "dataClassification": "Internal",
+        "shape": "rectangle"
+      }
+    },
+    {
+      "id": "gateway-service",
+      "type": "dfdProcess",
+      "position": { "x": 3330, "y": 750 },
+      "data": {
+        "label": "Protocol Gateway Service",
+        "processType": "Protocol Converter",
+        "zone": "Cloud Account - Engineering",
+        "description": "Protocol conversion gateway",
+        "technology": "Custom Gateway",
+        "protocols": ["HTTPS"],
+        "dataClassification": "Internal",
+        "shape": "rectangle"
+      }
+    },
+    {
+      "id": "landing-storage",
+      "type": "dfdDataStore",
+      "position": { "x": 3330, "y": 900 },
+      "data": {
+        "label": "Landing Zone Storage",
+        "storeType": "Object Storage",
+        "zone": "Cloud Account - Engineering",
+        "description": "Landing zone for data ingestion",
+        "technology": "Cloud Object Storage",
+        "encryption": "both",
+        "dataClassification": "Internal",
+        "shape": "cylinder"
+      }
+    },
+    {
+      "id": "proxy-service",
+      "type": "dfdProcess",
+      "position": { "x": 3530, "y": 400 },
+      "data": {
+        "label": "Message Proxy Service",
+        "processType": "Proxy Service",
+        "zone": "Cloud VPC",
+        "description": "Message proxy running on container service",
+        "technology": "Container Service",
+        "protocols": ["Kafka", "HTTPS"],
+        "dataClassification": "Internal",
+        "shape": "rectangle"
+      }
+    },
+    {
+      "id": "external-recon",
+      "type": "dfdProcess",
+      "position": { "x": 4100, "y": 850 },
+      "data": {
+        "label": "Data Reconciliation Service",
+        "processType": "External Data Service",
+        "zone": "External Integration System",
+        "description": "External system reconciliation service",
+        "technology": "External Platform",
+        "protocols": ["HTTPS"],
+        "dataClassification": "Sensitive",
+        "shape": "rectangle"
+      }
+    },
+    {
+      "id": "trust-boundary-internet",
+      "type": "dfdTrustBoundary",
+      "position": { "x": 720, "y": 150 },
+      "data": {
+        "label": "Internet Boundary",
+        "boundaryType": "Perimeter Firewall",
+        "description": "Trust boundary between Internet and Office Network",
+        "zone": "Office Network",
+        "controlsAtBoundary": ["Firewall", "IDS/IPS", "WAF"],
+        "shape": "rectangle"
+      }
+    },
+    {
+      "id": "trust-boundary-office-dc",
+      "type": "dfdTrustBoundary",
+      "position": { "x": 1490, "y": 150 },
+      "data": {
+        "label": "Office-DC Boundary",
+        "boundaryType": "Internal Network Segmentation",
+        "description": "Trust boundary between Office and Data Center",
+        "zone": "Data Center Network",
+        "controlsAtBoundary": ["Firewall", "Network Segmentation", "Access Control"],
+        "shape": "rectangle"
+      }
+    },
+    {
+      "id": "trust-boundary-dc-cloud",
+      "type": "dfdTrustBoundary",
+      "position": { "x": 2260, "y": 150 },
+      "data": {
+        "label": "DC-Cloud Boundary",
+        "boundaryType": "Hybrid Cloud Gateway",
+        "description": "Trust boundary between Data Center and Cloud",
+        "zone": "Cloud Account - Corporate",
+        "controlsAtBoundary": ["Direct Connect", "VPN", "Network ACLs"],
+        "shape": "rectangle"
+      }
+    },
+    {
+      "id": "trust-boundary-cloud-accounts",
+      "type": "dfdTrustBoundary",
+      "position": { "x": 3030, "y": 150 },
+      "data": {
+        "label": "Cloud Account Boundary",
+        "boundaryType": "Account Isolation",
+        "description": "Trust boundary between Cloud accounts",
+        "zone": "Cloud Account - Engineering",
+        "controlsAtBoundary": ["IAM Policies", "VPC Peering", "Cross-Account Roles"],
+        "shape": "rectangle"
+      }
+    },
+    {
+      "id": "trust-boundary-cloud-external",
+      "type": "dfdTrustBoundary",
+      "position": { "x": 3800, "y": 150 },
+      "data": {
+        "label": "External System Boundary",
+        "boundaryType": "Partner Integration Gateway",
+        "description": "Trust boundary between Cloud and External System",
+        "zone": "External Integration System",
+        "controlsAtBoundary": ["API Gateway", "mTLS", "IP Allowlisting", "OAuth"],
+        "shape": "rectangle"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "customer-01",
+      "target": "contractor-portal",
+      "type": "securityEdge",
+      "data": {
+        "label": "Submit Application Form - HTTPS",
+        "protocol": "HTTPS",
+        "encryption": "TLS 1.3",
+        "zone": "Office Network",
+        "dataClassification": "Internal"
+      }
+    },
+    {
+      "id": "e2",
+      "source": "contractor-02",
+      "target": "contractor-portal",
+      "type": "securityEdge",
+      "data": {
+        "label": "Submit Work Form - HTTPS",
+        "protocol": "HTTPS",
+        "encryption": "TLS 1.3",
+        "zone": "Office Network",
+        "dataClassification": "Internal"
+      }
+    },
+    {
+      "id": "e3",
+      "source": "contractor-portal",
+      "target": "portal-database",
+      "type": "securityEdge",
+      "data": {
+        "label": "Write Form Data - Database Connection",
+        "protocol": "JDBC",
+        "encryption": "TLS",
+        "zone": "Data Center Network",
+        "dataClassification": "Sensitive"
+      }
+    },
+    {
+      "id": "e4",
+      "source": "contractor-portal",
+      "target": "portal-daemon",
+      "type": "securityEdge",
+      "data": {
+        "label": "Queue Form Processing",
+        "protocol": "TCP",
+        "encryption": "TLS",
+        "zone": "Data Center Network",
+        "dataClassification": "Internal"
+      }
+    },
+    {
+      "id": "e5",
+      "source": "staff-03",
+      "target": "internal-portal",
+      "type": "securityEdge",
+      "data": {
+        "label": "Access Internal Portal",
+        "protocol": "HTTPS",
+        "encryption": "TLS 1.3",
+        "zone": "Office Network",
+        "dataClassification": "Internal"
+      }
+    },
+    {
+      "id": "e6",
+      "source": "internal-portal",
+      "target": "esb-service",
+      "type": "securityEdge",
+      "data": {
+        "label": "Get Event Information - Message Queue",
+        "protocol": "JMS",
+        "encryption": "TLS",
+        "zone": "Data Center Network",
+        "dataClassification": "Internal"
+      }
+    },
+    {
+      "id": "e7",
+      "source": "esb-service",
+      "target": "portal-daemon",
+      "type": "securityEdge",
+      "data": {
+        "label": "Update Event Status",
+        "protocol": "JDBC",
+        "encryption": "TLS",
+        "zone": "Data Center Network",
+        "dataClassification": "Internal"
+      }
+    },
+    {
+      "id": "e8",
+      "source": "portal-daemon",
+      "target": "portal-database",
+      "type": "securityEdge",
+      "data": {
+        "label": "Poll Events from Database",
+        "protocol": "JDBC",
+        "encryption": "TLS",
+        "zone": "Data Center Network",
+        "dataClassification": "Sensitive"
+      }
+    },
+    {
+      "id": "e9",
+      "source": "portal-daemon",
+      "target": "grid-control-api",
+      "type": "securityEdge",
+      "data": {
+        "label": "Push Contract Information - HTTPS",
+        "protocol": "HTTPS",
+        "encryption": "mTLS",
+        "zone": "Cloud Direct Connect Gateway",
+        "dataClassification": "Internal"
+      }
+    },
+    {
+      "id": "e10",
+      "source": "grid-control-api",
+      "target": "container-service",
+      "type": "securityEdge",
+      "data": {
+        "label": "Process Data Request",
+        "protocol": "HTTPS",
+        "encryption": "TLS",
+        "zone": "Cloud Direct Connect Gateway",
+        "dataClassification": "Internal"
+      }
+    },
+    {
+      "id": "e11",
+      "source": "container-service",
+      "target": "integration-api",
+      "type": "securityEdge",
+      "data": {
+        "label": "Forward Processing Request",
+        "protocol": "HTTPS",
+        "encryption": "TLS",
+        "zone": "Cloud Account - Corporate",
+        "dataClassification": "Internal"
+      }
+    },
+    {
+      "id": "e12",
+      "source": "integration-api",
+      "target": "proxy-service",
+      "type": "securityEdge",
+      "data": {
+        "label": "Subscribe to Message Topics",
+        "protocol": "HTTPS",
+        "encryption": "TLS",
+        "zone": "Cloud VPC",
+        "dataClassification": "Internal"
+      }
+    },
+    {
+      "id": "e13",
+      "source": "proxy-service",
+      "target": "message-broker-eng",
+      "type": "securityEdge",
+      "data": {
+        "label": "Message Stream Subscription",
+        "protocol": "Kafka",
+        "encryption": "TLS",
+        "zone": "Cloud Account - Engineering",
+        "dataClassification": "Internal"
+      }
+    },
+    {
+      "id": "e14",
+      "source": "message-broker-eng",
+      "target": "gateway-service",
+      "type": "securityEdge",
+      "data": {
+        "label": "Process Message Stream",
+        "protocol": "Kafka",
+        "encryption": "TLS",
+        "zone": "Cloud Account - Engineering",
+        "dataClassification": "Internal"
+      }
+    },
+    {
+      "id": "e15",
+      "source": "gateway-service",
+      "target": "landing-storage",
+      "type": "securityEdge",
+      "data": {
+        "label": "Store Processed Data",
+        "protocol": "HTTPS",
+        "encryption": "TLS",
+        "zone": "Cloud Account - Engineering",
+        "dataClassification": "Internal"
+      }
+    },
+    {
+      "id": "e16",
+      "source": "container-service",
+      "target": "portal-daemon",
+      "type": "securityEdge",
+      "data": {
+        "label": "Status Update Callback",
+        "protocol": "HTTPS",
+        "encryption": "mTLS",
+        "zone": "Data Center Network",
+        "dataClassification": "Internal"
+      }
+    },
+    {
+      "id": "e17",
+      "source": "portal-daemon",
+      "target": "container-service",
+      "type": "securityEdge",
+      "data": {
+        "label": "Push Data Updates",
+        "protocol": "HTTPS",
+        "encryption": "mTLS",
+        "zone": "Cloud Direct Connect Gateway",
+        "dataClassification": "Internal"
+      }
+    },
+    {
+      "id": "e18",
+      "source": "container-service",
+      "target": "proxy-service",
+      "type": "securityEdge",
+      "data": {
+        "label": "Subscribe to Updates",
+        "protocol": "HTTPS",
+        "encryption": "TLS",
+        "zone": "Cloud VPC",
+        "dataClassification": "Internal"
+      }
+    },
+    {
+      "id": "e19",
+      "source": "container-service",
+      "target": "portal-daemon",
+      "type": "securityEdge",
+      "data": {
+        "label": "Publish Update Events",
+        "protocol": "HTTPS",
+        "encryption": "mTLS",
+        "zone": "Data Center Network",
+        "dataClassification": "Internal"
+      }
+    },
+    {
+      "id": "e20",
+      "source": "esb-service",
+      "target": "api-service",
+      "type": "securityEdge",
+      "data": {
+        "label": "Monthly Reconciliation Request",
+        "protocol": "HTTPS",
+        "encryption": "TLS",
+        "zone": "Office Network",
+        "dataClassification": "Internal"
+      }
+    },
+    {
+      "id": "e21",
+      "source": "cloud-dms",
+      "target": "container-service",
+      "type": "securityEdge",
+      "data": {
+        "label": "Sync Reconciliation Data",
+        "protocol": "HTTPS",
+        "encryption": "TLS",
+        "zone": "Cloud Direct Connect Gateway",
+        "dataClassification": "Sensitive"
+      }
+    },
+    {
+      "id": "e22",
+      "source": "landing-storage",
+      "target": "external-recon",
+      "type": "securityEdge",
+      "data": {
+        "label": "Retrieve Reconciliation Data",
+        "protocol": "HTTPS",
+        "encryption": "TLS",
+        "zone": "External Integration System",
+        "dataClassification": "Sensitive"
+      }
+    },
+    {
+      "id": "e23",
+      "source": "esb-service",
+      "target": "email-gateway",
+      "type": "securityEdge",
+      "data": {
+        "label": "Send Email Notification",
+        "protocol": "SMTP",
+        "encryption": "TLS",
+        "zone": "Office Network",
+        "dataClassification": "Internal"
+      }
+    },
+    {
+      "id": "e24",
+      "source": "email-gateway",
+      "target": "customer-email",
+      "type": "securityEdge",
+      "data": {
+        "label": "Deliver Email",
+        "protocol": "SMTP",
+        "encryption": "TLS",
+        "zone": "Internet",
+        "dataClassification": "Internal"
+      }
+    },
+    {
+      "id": "e25",
+      "source": "portal-database",
+      "target": "portal-daemon",
+      "type": "securityEdge",
+      "data": {
+        "label": "Database Updates",
+        "protocol": "JDBC",
+        "encryption": "TLS",
+        "zone": "Data Center Network",
+        "dataClassification": "Sensitive"
+      }
+    },
+    {
+      "id": "e26",
+      "source": "portal-daemon",
+      "target": "esb-service",
+      "type": "securityEdge",
+      "data": {
+        "label": "Event Status Updates",
+        "protocol": "JMS",
+        "encryption": "TLS",
+        "zone": "Data Center Network",
+        "dataClassification": "Internal"
+      }
+    },
+    {
+      "id": "e27",
+      "source": "esb-service",
+      "target": "portal-database",
+      "type": "securityEdge",
+      "data": {
+        "label": "Query Event Data",
+        "protocol": "JDBC",
+        "encryption": "TLS",
+        "zone": "Data Center Network",
+        "dataClassification": "Sensitive"
+      }
+    }
+  ],
+  "metadata": {
+    "version": "1.0",
+    "lastModified": "2025-01-09T00:00:00.000Z",
+    "diagramType": "DFD",
+    "description": "Traditional DFD representation of multi-cloud integration architecture"
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "version": "1.0",
+  "timestamp": "2025-01-19T12:00:00Z",
+  "description": "Example targeted threat scenarios with threat intelligence for AI Threat Modeler",
+  "examples": [
+    {
+      "name": "APT29 Cozy Bear Campaign",
+      "threatActors": "APT29 (Cozy Bear), Russian state-sponsored group",
+      "ttps": "T1566.001 (Spearphishing), T1078 (Valid Accounts), T1055 (Process Injection), T1071.001 (Web Protocols)",
+      "vulnerabilities": "CVE-2023-23397 (Outlook), CVE-2023-28252 (Windows CLFS), unpatched Exchange servers",
+      "focusAreas": "Email systems, Active Directory, cloud infrastructure",
+      "scenarioDescription": "APT29 targeting government agency through spearphishing campaign leading to AD compromise",
+      "threatIntelligence": {
+        "rawIntelligence": "CISA Alert AA23-347A: APT29 has been observed exploiting CVE-2023-23397 in Microsoft Outlook for initial access. The group uses WellMess malware and custom PowerShell scripts for persistence. Recent campaigns show focus on cloud environments, particularly Azure AD and M365.",
+        "recentCVEs": "CVE-2023-23397 (Outlook Elevation of Privilege)\nCVE-2023-28252 (Windows CLFS Privilege Escalation)\nCVE-2023-36884 (Office and Windows HTML RCE)",
+        "knownIOCs": "C2 Domains: microsofthelpcenter.org, windows-update-service.net\nIP Addresses: 185.220.101.35, 185.220.101.37\nFile Hash (SHA256): 2f7df0e7ae8b0e5c5f5d5c5a9f9e8d7c6b5a4a3",
+        "campaignInfo": "Operation 'SolarWinds' follow-up campaigns targeting supply chain and cloud infrastructure. Using legitimate cloud services for C2 communication.",
+        "intelligenceDate": "2025-01-15"
+      }
+    },
+    {
+      "name": "Lazarus Financial Heist",
+      "threatActors": "Lazarus Group, North Korean state-sponsored",
+      "ttps": "T1190 (Exploit Public-Facing App), T1055.012 (Process Hollowing), T1486 (Data Encrypted for Impact)",
+      "vulnerabilities": "Log4Shell (CVE-2021-44228), unpatched Apache Struts, weak API authentication",
+      "focusAreas": "Web applications, API endpoints, database servers, payment processing systems",
+      "scenarioDescription": "Lazarus targeting financial institution's web infrastructure for monetary theft",
+      "threatIntelligence": {
+        "rawIntelligence": "FBI Flash Report: Lazarus Group actively exploiting Log4j vulnerabilities in financial sector. Using FASTCash malware variant for ATM cashouts. Cryptocurrency exchanges remain primary targets.",
+        "recentCVEs": "CVE-2021-44228 (Log4Shell)\nCVE-2024-3094 (XZ Utils backdoor)\nCVE-2023-34362 (MOVEit Transfer SQLi)",
+        "knownIOCs": "Bitcoin addresses: 12t9YDPgwueZ9NyMgw519p7AA8isjr6SMw\nMalware samples: PowerRatankba.exe (MD5: a64a6e797917b0e9b0c6f62b983b9868)\nC2 servers: update-microsoft.net:443",
+        "campaignInfo": "Operation 'DreamJob' - fake job offers targeting cryptocurrency and fintech employees. Custom ransomware deployment after data exfiltration.",
+        "intelligenceDate": "2025-01-10"
+      }
+    },
+    {
+      "name": "APT28 Critical Infrastructure Attack",
+      "threatActors": "APT28 (Fancy Bear), Russian GRU",
+      "ttps": "T1133 (External Remote Services), T1021.001 (RDP), T1087 (Account Discovery), T1003 (Credential Dumping)",
+      "vulnerabilities": "Exposed RDP services, default credentials on SCADA systems, CVE-2024-1234 (fictional ICS vulnerability)",
+      "focusAreas": "SCADA networks, HMI interfaces, engineering workstations, OT/IT boundaries",
+      "scenarioDescription": "APT28 targeting energy sector industrial control systems through IT/OT convergence points",
+      "threatIntelligence": {
+        "rawIntelligence": "DHS ICS-CERT: APT28 observed targeting energy sector ICS environments. Using VPNFilter malware stage 3 modules for SCADA reconnaissance. Living-off-the-land techniques in OT networks.",
+        "recentCVEs": "CVE-2023-1234 (Schneider Electric Unity Pro)\nCVE-2023-5678 (Siemens SIMATIC S7)\nCVE-2024-9012 (ABB System 800xA)",
+        "knownIOCs": "Modbus scanner tool: ics-recon.exe\nRogue engineering workstation: 192.168.1.150\nMalicious ladder logic: mal_plc_logic.st1",
+        "campaignInfo": "Operation 'Dragonfly 2.0' continuation. Pre-positioning for potential disruptive attacks. Focus on gathering ICS network diagrams and process documentation.",
+        "intelligenceDate": "2025-01-18"
+      }
+    },
+    {
+      "name": "Ransomware Affiliate Campaign",
+      "threatActors": "BlackCat/ALPHV affiliates, Russian-speaking cybercriminals",
+      "ttps": "T1486 (Data Encrypted), T1490 (Inhibit System Recovery), T1489 (Service Stop), T1083 (File Discovery)",
+      "vulnerabilities": "Unpatched VPN appliances, ProxyNotShell, weak MFA implementation",
+      "focusAreas": "Backup systems, domain controllers, file servers, VMware infrastructure",
+      "scenarioDescription": "Ransomware group targeting healthcare organization through vulnerable edge devices",
+      "threatIntelligence": {
+        "rawIntelligence": "HC3 Threat Brief: BlackCat ransomware affiliates increasingly targeting healthcare. Using stolen credentials from initial access brokers. ESXi servers primary target for maximum impact.",
+        "recentCVEs": "CVE-2023-34362 (MOVEit Transfer)\nCVE-2023-2868 (Barracuda ESG)\nCVE-2023-27350 (PaperCut)",
+        "knownIOCs": "Ransomware executable: blackcat.exe (SHA256: 3a7e3f4b9c2d1e5f6a8b9c0d2e4f5a6b7c8d9e0f)\nTOR sites: blackcatXXXXXXXX.onion\nExfiltration tool: rclone.exe renamed as svchost.exe",
+        "campaignInfo": "Triple extortion model: encryption + data theft + DDoS threats. Average ransom demand $2.5M. 7-day countdown timer before data leak.",
+        "intelligenceDate": "2025-01-12"
+      }
+    }
+  ],
+  "usage_notes": {
+    "description": "These examples can be used to test the targeted threat analysis feature with realistic threat intelligence",
+    "fields": {
+      "rawIntelligence": "Paste threat bulletins, CISA alerts, or security vendor reports",
+      "recentCVEs": "List relevant CVEs with brief descriptions",
+      "knownIOCs": "Include domains, IPs, file hashes, or other indicators",
+      "campaignInfo": "Describe ongoing campaigns, TTPs evolution, or targeting patterns",
+      "intelligenceDate": "When the intelligence was gathered or last updated"
+    }
+  }
+}

@@ -1,0 +1,76 @@
+@startuml Banking System Architecture
+
+!define RECTANGLE rectangle
+
+' Define colors for security zones
+!define DMZ_COLOR #FF9999
+!define APP_COLOR #99CCFF
+!define DATA_COLOR #99FF99
+!define SECURE_COLOR #FFCC99
+
+' External actors
+actor "Mobile User" as MobileUser
+actor "Web User" as WebUser
+actor "ATM" as ATM
+
+' DMZ Zone
+package "DMZ Zone" <<DMZ_COLOR>> {
+    RECTANGLE "Web Application Firewall" as WAF
+    RECTANGLE "API Gateway" as APIGW
+    RECTANGLE "Load Balancer" as LB
+}
+
+' Application Zone
+package "Application Zone" <<APP_COLOR>> {
+    RECTANGLE "Authentication Service" as AuthService
+    RECTANGLE "Account Management" as AcctMgmt
+    RECTANGLE "Transaction Processing" as TxnProc
+    RECTANGLE "Fraud Detection" as FraudDetect
+}
+
+' Data Zone
+package "Data Zone" <<DATA_COLOR>> {
+    database "Customer Database" as CustDB
+    database "Transaction Database" as TxnDB
+    database "Audit Log Database" as AuditDB
+}
+
+' Secure Processing Zone
+package "Secure Processing Zone" <<SECURE_COLOR>> {
+    RECTANGLE "HSM\n(Hardware Security Module)" as HSM
+    RECTANGLE "Payment Processor" as PayProc
+    RECTANGLE "Core Banking System" as CoreBanking
+}
+
+' Connections
+MobileUser --> WAF : HTTPS
+WebUser --> WAF : HTTPS
+ATM --> APIGW : VPN
+
+WAF --> LB
+LB --> AuthService
+LB --> AcctMgmt
+LB --> TxnProc
+
+AuthService --> HSM : Encrypt/Decrypt
+AuthService --> CustDB
+
+AcctMgmt --> CustDB
+AcctMgmt --> CoreBanking
+
+TxnProc --> TxnDB
+TxnProc --> FraudDetect
+TxnProc --> PayProc
+
+FraudDetect --> TxnDB : Analyze
+FraudDetect --> AuditDB : Log
+
+PayProc --> CoreBanking
+CoreBanking --> TxnDB
+
+' All services log to audit
+AuthService --> AuditDB : Audit Log
+AcctMgmt --> AuditDB : Audit Log
+TxnProc --> AuditDB : Audit Log
+
+@enduml

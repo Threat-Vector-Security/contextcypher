@@ -1,0 +1,194 @@
+{
+  "name": "Cloud Infrastructure Architecture",
+  "description": "Multi-tier cloud application with microservices",
+  "nodes": [
+    {
+      "id": "cdn",
+      "label": "CloudFlare CDN",
+      "type": "cdn",
+      "position": { "x": 100, "y": 100 },
+      "data": {
+        "zone": "Internet",
+        "provider": "CloudFlare"
+      }
+    },
+    {
+      "id": "waf",
+      "label": "Web Application Firewall",
+      "type": "firewall",
+      "position": { "x": 300, "y": 100 },
+      "data": {
+        "zone": "DMZ",
+        "rules": "OWASP Top 10"
+      }
+    },
+    {
+      "id": "alb",
+      "label": "Application Load Balancer",
+      "type": "loadbalancer",
+      "position": { "x": 500, "y": 100 },
+      "data": {
+        "zone": "DMZ",
+        "type": "Application",
+        "provider": "AWS"
+      }
+    },
+    {
+      "id": "api-gateway",
+      "label": "API Gateway",
+      "type": "api",
+      "position": { "x": 300, "y": 250 },
+      "data": {
+        "zone": "Internal",
+        "authentication": "OAuth2"
+      }
+    },
+    {
+      "id": "auth-service",
+      "label": "Authentication Service",
+      "type": "application",
+      "position": { "x": 100, "y": 400 },
+      "data": {
+        "zone": "Internal",
+        "technology": "Node.js"
+      }
+    },
+    {
+      "id": "user-service",
+      "label": "User Service",
+      "type": "application",
+      "position": { "x": 300, "y": 400 },
+      "data": {
+        "zone": "Internal",
+        "technology": "Python"
+      }
+    },
+    {
+      "id": "payment-service",
+      "label": "Payment Service",
+      "type": "application",
+      "position": { "x": 500, "y": 400 },
+      "data": {
+        "zone": "Restricted",
+        "compliance": "PCI-DSS"
+      }
+    },
+    {
+      "id": "cache",
+      "label": "Redis Cache",
+      "type": "cache",
+      "position": { "x": 700, "y": 250 },
+      "data": {
+        "zone": "Internal",
+        "technology": "Redis"
+      }
+    },
+    {
+      "id": "user-db",
+      "label": "User Database",
+      "type": "database",
+      "position": { "x": 300, "y": 550 },
+      "data": {
+        "zone": "Trusted",
+        "technology": "PostgreSQL",
+        "encryption": "AES-256"
+      }
+    },
+    {
+      "id": "payment-db",
+      "label": "Payment Database",
+      "type": "database",
+      "position": { "x": 500, "y": 550 },
+      "data": {
+        "zone": "Critical",
+        "technology": "PostgreSQL",
+        "encryption": "AES-256",
+        "compliance": "PCI-DSS"
+      }
+    },
+    {
+      "id": "mq",
+      "label": "Message Queue",
+      "type": "messagequeue",
+      "position": { "x": 700, "y": 400 },
+      "data": {
+        "zone": "Internal",
+        "technology": "RabbitMQ"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "cdn",
+      "target": "waf",
+      "label": "HTTPS"
+    },
+    {
+      "id": "e2",
+      "source": "waf",
+      "target": "alb",
+      "label": "Filtered Traffic"
+    },
+    {
+      "id": "e3",
+      "source": "alb",
+      "target": "api-gateway",
+      "label": "Load Balanced"
+    },
+    {
+      "id": "e4",
+      "source": "api-gateway",
+      "target": "auth-service",
+      "label": "Auth Requests"
+    },
+    {
+      "id": "e5",
+      "source": "api-gateway",
+      "target": "user-service",
+      "label": "User API"
+    },
+    {
+      "id": "e6",
+      "source": "api-gateway",
+      "target": "payment-service",
+      "label": "Payment API"
+    },
+    {
+      "id": "e7",
+      "source": "auth-service",
+      "target": "cache",
+      "label": "Session Cache"
+    },
+    {
+      "id": "e8",
+      "source": "user-service",
+      "target": "user-db",
+      "label": "User Data"
+    },
+    {
+      "id": "e9",
+      "source": "user-service",
+      "target": "cache",
+      "label": "Query Cache"
+    },
+    {
+      "id": "e10",
+      "source": "payment-service",
+      "target": "payment-db",
+      "label": "Payment Data"
+    },
+    {
+      "id": "e11",
+      "source": "payment-service",
+      "target": "mq",
+      "label": "Payment Events"
+    },
+    {
+      "id": "e12",
+      "source": "user-service",
+      "target": "mq",
+      "label": "User Events"
+    }
+  ]
+}

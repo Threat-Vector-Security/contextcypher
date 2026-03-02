@@ -1,0 +1,6 @@
+actor_name,aliases,description,ttps,first_seen,severity
+APT29,Cozy Bear|The Dukes,Russian state-sponsored threat actor targeting government and commercial entities,T1190|T1055|T1003|T1021,2008-01-01,critical
+Lazarus Group,Hidden Cobra,North Korean state-sponsored group known for destructive attacks and financial theft,T1203|T1064|T1045|T1486,2009-01-01,critical
+FIN7,Carbanak,Financially motivated group targeting retail and hospitality sectors,T1566|T1055|T1059|T1105,2013-01-01,high
+APT28,Fancy Bear|Sofacy,Russian military intelligence group targeting defense and government,T1190|T1133|T1078|T1210,2004-01-01,critical
+Scattered Spider,UNC3944,Social engineering focused group targeting cloud environments,T1566|T1078|T1098|T1552,2022-01-01,high
