@@ -21,7 +21,11 @@ cd server && npm install && cd ..
 The simplest way to build and run the full application:
 
 ```powershell
+# Windows
 .\full-rebuild.ps1
+
+# Linux / macOS
+./full-rebuild.sh
 ```
 
 This installs dependencies, builds the frontend and backend, and starts both servers. If this runs successfully, your environment is working.
@@ -29,10 +33,14 @@ This installs dependencies, builds the frontend and backend, and starts both ser
 For frontend-only work with hot reload:
 
 ```powershell
+# Windows
 .\Development-Rebuild.ps1
+
+# Linux / macOS
+./Development-Rebuild.sh
 ```
 
-Or run manually:
+Or run manually on any platform:
 
 ```bash
 # Backend
@@ -46,7 +54,7 @@ npm start
 
 1. Fork the repo and create a feature branch from `main`
 2. Make your changes
-3. Verify the app builds and runs with `.\full-rebuild.ps1`
+3. Verify the app builds and runs (`.\full-rebuild.ps1` on Windows, `./full-rebuild.sh` on Linux/macOS)
 4. Commit with a clear message describing what changed
 5. Open a Pull Request against `main`
 

@@ -52,8 +52,6 @@ cd server && npm install && cd ..
 
 ### Windows (PowerShell)
 
-The included dev scripts are PowerShell-based:
-
 ```powershell
 # Frontend work -- hot reload on port 3000, backend on port 3002
 .\Development-Rebuild.ps1
@@ -62,7 +60,17 @@ The included dev scripts are PowerShell-based:
 .\full-rebuild.ps1
 ```
 
-### All Platforms (Manual Start)
+### Linux / macOS
+
+```bash
+# Frontend work -- hot reload
+./Development-Rebuild.sh
+
+# Full rebuild
+./full-rebuild.sh
+```
+
+### Manual Start (Any Platform)
 
 ```bash
 # Backend (with auto-restart)
