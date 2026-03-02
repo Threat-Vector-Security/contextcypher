@@ -388,7 +388,7 @@ const ReferenceTabContent: React.FC = () => {
       <Box>
         <Typography variant="subtitle2" gutterBottom>The Four-Question Framework</Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-          The simplest threat modeling process answers four questions (Adam Shostack):
+          The simplest threat modeling process answers four questions (credit Adam Shostack):
         </Typography>
         {[
           { q: '1. What are we building?', a: 'Create a DFD or architecture diagram. Identify components, data flows, and trust boundaries.' },

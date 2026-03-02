@@ -4,7 +4,6 @@
 
 We are committed to providing a welcoming and inclusive experience for everyone. We expect all participants to:
 
-- Use welcoming and inclusive language
 - Be respectful of differing viewpoints and experiences
 - Accept constructive criticism gracefully
 - Focus on what is best for the community
