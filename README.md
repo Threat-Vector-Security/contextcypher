@@ -4,6 +4,8 @@ An offline-first desktop application for creating system architecture diagrams a
 
 Built for security professionals, architects, and developers. Visually map out your systems and receive security insights powered by local LLMs without your data leaving your machine.
 
+![Diagram Editor](docs/screenshots/diagram-editor.png)
+
 ## Features
 
 - **Offline-First** -- Operates entirely offline using local LLMs (Ollama). Your data stays on your machine.
@@ -11,8 +13,21 @@ Built for security professionals, architects, and developers. Visually map out y
 - **AI Diagram Generation** -- Describe your system in plain text and get a complete threat model diagram.
 - **Diagram Editor** -- ReactFlow-based editor with custom nodes, security zones, and connection properties.
 - **Drawing & Annotation Layer** -- Free-form drawings, text, and boundary boxes on your diagrams.
+- **3D Isometric View** -- Visualize your architecture in an interactive 3D isometric perspective.
+- **GRC Module** -- Integrated governance, risk, and compliance with attack path visualization and STRIDE mapping.
 - **Autosave** -- Configurable autosave with modern file system integration.
 - **Multiple AI Providers** -- Ollama (default, offline), OpenAI, Anthropic Claude, Google Gemini.
+
+### 3D Isometric View
+
+![3D Isometric View](docs/screenshots/3d-isometric-view.png)
+
+### GRC Module -- Attack Paths & Threat Modeling
+
+<p>
+<img src="docs/screenshots/grc-attack-paths.png" width="49%" alt="GRC Attack Paths" />
+<img src="docs/screenshots/grc-threat-model.png" width="49%" alt="GRC Threat Model" />
+</p>
 
 ## Technology Stack
 
@@ -35,23 +50,19 @@ npm install
 cd server && npm install && cd ..
 ```
 
-### Development with Hot Reload (Frontend Work)
+### Windows (PowerShell)
+
+The included dev scripts are PowerShell-based:
 
 ```powershell
+# Frontend work -- hot reload on port 3000, backend on port 3002
 .\Development-Rebuild.ps1
-```
 
-Starts the backend on port 3002 (with nodemon) and the React dev server on port 3000 (with hot reload). Best for UI and component work.
-
-### Full Rebuild (Backend Work)
-
-```powershell
+# Full rebuild -- builds frontend + backend, starts both servers
 .\full-rebuild.ps1
 ```
 
-Builds the frontend with React minification and the backend, then starts both servers. Use this when making backend changes or testing a production-like build.
-
-### Manual Start
+### All Platforms (Manual Start)
 
 ```bash
 # Backend (with auto-restart)
@@ -60,7 +71,7 @@ cd server && npm run dev
 # Frontend (separate terminal)
 npm start
 
-# Both at once
+# Or both at once
 npm run dev
 ```
 
