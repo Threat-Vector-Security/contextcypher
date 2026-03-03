@@ -41,6 +41,17 @@ if (process.env.SKIP_INTERNAL_NODE === '1') {
 
 const express = require('express');
 const path = require('path');
+const crypto = require('crypto');
+const { safeOllamaUrl, validateOllamaBaseUrl } = require('./utils/ollamaUrl');
+
+
+function sanitizeDiagramId(id) {
+  if (!id || typeof id !== 'string') return null;
+  const trimmed = id.trim();
+  if (!/^[a-zA-Z0-9_-]+$/.test(trimmed)) return null;
+  return trimmed;
+}
+
 const fs = require('fs');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
@@ -311,7 +322,7 @@ app.use(cors(corsOptions));
 // Request logging middleware - MUST come early to catch all requests
 app.use((req, res, next) => {
   const timestamp = new Date().toISOString();
-  const requestId = Math.random().toString(36).substring(7);
+  const requestId = crypto.randomBytes(4).toString('hex');
   req.requestId = requestId;
   
   logger.info(`[${timestamp}] [${requestId}] Incoming request:`, {
@@ -698,6 +709,19 @@ async function ensureProviderInitializedForRequest(req, preferredProvider) {
   }
 
   const initConfig = getProviderInitConfigFromRequest(requestedProvider, req);
+
+  if (requestedProvider === 'local') {
+    const baseUrlValidation = validateOllamaBaseUrl(initConfig.baseUrl);
+    if (!baseUrlValidation.valid) {
+      return {
+        ok: false,
+        status: 400,
+        error: 'Invalid Local LLM URL',
+        message: baseUrlValidation.error,
+        details: 'Use http://127.0.0.1:11434 or configure OLLAMA_ALLOWED_HOSTS for additional hosts.'
+      };
+    }
+  }
 
   if (requestedProvider !== 'local' && !initConfig.apiKey) {
     logger.warn(`Provider ${requestedProvider} requested but no API key is available`);
@@ -2454,7 +2478,7 @@ app.post('/api/threat-analysis/cancel', async (req, res) => {
 
 // === Threat Analysis SSE Endpoint (with progress) ===
 app.post('/api/threat-analysis/sse', async (req, res) => {
-  const requestId = `req-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  const requestId = `req-${Date.now()}-${crypto.randomBytes(5).toString('hex')}`;
   logger.info(`[THREAT-ANALYSIS-SSE] ========== NEW SSE REQUEST ${requestId} ==========`);
   
   // Set up SSE headers
@@ -2515,7 +2539,7 @@ app.post('/api/threat-analysis/sse', async (req, res) => {
     }
 
     // Create analysis session
-    const sessionId = analysisId || `analysis-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    const sessionId = analysisId || `analysis-${Date.now()}-${crypto.randomBytes(5).toString('hex')}`;
     const analysisSession = {
       id: sessionId,
       requestId,
@@ -2631,7 +2655,7 @@ app.post('/api/threat-analysis/sse', async (req, res) => {
 
 // === Threat Analysis Endpoint ===
 app.post('/api/threat-analysis', async (req, res) => {
-  const requestId = `req-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  const requestId = `req-${Date.now()}-${crypto.randomBytes(5).toString('hex')}`;
   logger.info(`[THREAT-ANALYSIS] ========== NEW REQUEST ${requestId} ==========`);
   
   try {
@@ -2660,7 +2684,7 @@ app.post('/api/threat-analysis', async (req, res) => {
     }
 
     // Create analysis session if ID provided
-    const sessionId = analysisId || `analysis-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    const sessionId = analysisId || `analysis-${Date.now()}-${crypto.randomBytes(5).toString('hex')}`;
     const analysisSession = {
       id: sessionId,
       requestId,
@@ -3294,7 +3318,9 @@ app.post('/api/chat', async (req, res) => {
     // If no diagram in context but diagramId is provided, load from file
     if (!diagram && diagramId) {
       try {
-        const diagramPath = path.join(DIAGRAMS_DIR, `${diagramId}.json`);
+        const safeId = sanitizeDiagramId(diagramId);
+        if (!safeId) throw new Error('Invalid diagram ID');
+        const diagramPath = path.join(DIAGRAMS_DIR, `${safeId}.json`);
         const diagramData = await fs.promises.readFile(diagramPath, 'utf8');
         diagram = JSON.parse(diagramData);
         logger.info(`Loaded diagram ${diagramId}`);
@@ -3322,7 +3348,9 @@ app.post('/api/chat', async (req, res) => {
         // If diagramId is provided, try to load cached threat intel
         if (diagramId) {
           try {
-            const threatIntelPath = path.join(THREAT_INTEL_DIR, `${diagramId}.json`);
+            const safeId = sanitizeDiagramId(diagramId);
+            if (!safeId) throw new Error('Invalid diagram ID for threat intelligence lookup');
+            const threatIntelPath = path.join(THREAT_INTEL_DIR, `${safeId}.json`);
             const threatIntelData = await fs.promises.readFile(threatIntelPath, 'utf8');
             threatIntel = JSON.parse(threatIntelData);
             logger.info(`Loaded threat intelligence data for diagram ${diagramId}`);
@@ -3673,7 +3701,9 @@ app.post('/api/chat/stream', async (req, res) => {
     // If no diagram in context but diagramId is provided, load from file
     if (!diagram && diagramId) {
       try {
-        const diagramPath = path.join(DIAGRAMS_DIR, `${diagramId}.json`);
+        const safeId = sanitizeDiagramId(diagramId);
+        if (!safeId) throw new Error('Invalid diagram ID');
+        const diagramPath = path.join(DIAGRAMS_DIR, `${safeId}.json`);
         const diagramData = await fs.promises.readFile(diagramPath, 'utf8');
         diagram = JSON.parse(diagramData);
         logger.info(`Loaded diagram ${diagramId}`);
@@ -3690,7 +3720,9 @@ app.post('/api/chat/stream', async (req, res) => {
         // If diagramId is provided, try to load cached threat intel
         if (diagramId) {
           try {
-            const threatIntelPath = path.join(THREAT_INTEL_DIR, `${diagramId}.json`);
+            const safeId = sanitizeDiagramId(diagramId);
+            if (!safeId) throw new Error('Invalid diagram ID for threat intelligence lookup');
+            const threatIntelPath = path.join(THREAT_INTEL_DIR, `${safeId}.json`);
             const threatIntelData = await fs.promises.readFile(threatIntelPath, 'utf8');
             threatIntel = JSON.parse(threatIntelData);
             logger.info(`Loaded threat intelligence data for diagram ${diagramId}`);
@@ -4387,8 +4419,9 @@ app.post('/api/settings/ai-provider', async (req, res) => {
               
               // Handle provider-specific configuration
               if (provider === 'local') {
-                  if (!baseUrl) {
-                      throw new Error('Base URL is required for local LLM');
+                  const baseUrlValidation = validateOllamaBaseUrl(baseUrl);
+                  if (!baseUrlValidation.valid) {
+                      throw new Error(baseUrlValidation.error);
                   }
                   testConfig.model = model;
                   testConfig.temperature = temperature || 0.2;
@@ -4490,10 +4523,11 @@ app.post('/api/settings/ai-provider', async (req, res) => {
           
           // Handle local LLM configuration
           if (provider === 'local') {
-              if (!baseUrl) {
+              const baseUrlValidation = validateOllamaBaseUrl(baseUrl);
+              if (!baseUrlValidation.valid) {
                   return res.status(400).json({
-                      error: 'Base URL is required for local LLM',
-                      message: 'Please provide a valid base URL for your local LLM server (e.g., http://localhost:11434)'
+                      error: 'Invalid local LLM base URL',
+                      message: `${baseUrlValidation.error}. Use http://127.0.0.1:11434 or configure OLLAMA_ALLOWED_HOSTS for additional hosts.`
                   });
               }
               config.model = model; // Use exact model provided by user
@@ -4592,8 +4626,8 @@ app.post('/api/settings/validate', async (req, res) => {
               isValid = apiKey && apiKey.length > 0;
               break;
           case 'local':
-              // For local LLM, we need a valid base URL
-              isValid = baseUrl && baseUrl.startsWith('http');
+              // For local LLM, validate URL and host restrictions
+              isValid = validateOllamaBaseUrl(baseUrl).valid;
               break;
           default:
               isValid = false;
@@ -4809,7 +4843,7 @@ app.get('/api/ollama/model-info/:modelName', async (req, res) => {
     }
     
     // Get detailed model information from Ollama
-    const response = await axios.post(`${baseUrl}/api/show`, {
+    const response = await axios.post(safeOllamaUrl(baseUrl, '/api/show'), {
       name: modelName
     }, {
       timeout: 5000
@@ -4918,7 +4952,7 @@ app.post('/api/ollama/create-custom-model', async (req, res) => {
     }
     
     // Create the custom model
-    const response = await axios.post(`${baseUrl}/api/create`, {
+    const response = await axios.post(safeOllamaUrl(baseUrl, '/api/create'), {
       model: safeModelName,
       modelfile: modelfile,
       stream: false
@@ -4975,7 +5009,7 @@ app.get('/api/ollama/gpu-status', async (req, res) => {
     
     try {
       // Get running models info
-      const psResponse = await fetch(`${baseUrl}/api/ps`);
+      const psResponse = await fetch(safeOllamaUrl(baseUrl, '/api/ps'));
       if (psResponse.ok) {
         const psData = await psResponse.json();
         
@@ -5006,7 +5040,7 @@ app.get('/api/ollama/gpu-status', async (req, res) => {
     // Try to detect GPU capabilities from Ollama version endpoint
     if (!gpuInfo.available) {
       try {
-        const versionResponse = await fetch(`${baseUrl}/api/version`);
+        const versionResponse = await fetch(safeOllamaUrl(baseUrl, '/api/version'));
         if (versionResponse.ok) {
           const versionData = await versionResponse.json();
           logger.debug('Ollama version info:', versionData);
@@ -5317,7 +5351,7 @@ var ensureOllamaDaemon = async function (baseUrl = 'http://127.0.0.1:11434') {
   // You can use any method you prefer to check if the daemon is running
   // For example, you can use a simple HTTP request to check if the daemon is ready
   try {
-    const response = await fetch(`${baseUrl}/api/status`);
+    const response = await fetch(safeOllamaUrl(baseUrl, '/api/status'));
     if (response.status === 200) {
       logger.info('Ollama daemon is running');
       return true;

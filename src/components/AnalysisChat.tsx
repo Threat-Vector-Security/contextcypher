@@ -14,6 +14,7 @@ import {
   Typography
 } from '@mui/material';
 import { ChevronRight, ChevronLeft, ChevronDown } from 'lucide-react';
+import DOMPurify from 'dompurify';
 import { ChatMessage, MessageType } from '../types/ChatTypes';
 import { useSettings } from '../settings/SettingsContext';
 import { chatWithStreaming } from '../services/AIRequestService';
@@ -123,7 +124,7 @@ const MessageContent = memo(({
         }}
       >
         {useHtmlFormatting ? (
-          <span dangerouslySetInnerHTML={{ __html: messageContent }} />
+          <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(messageContent as string) }} />
         ) : (
           messageContent
         )}

@@ -193,7 +193,7 @@ class LangExtractClient {
     // Basic pattern matching as fallback
     const cvePattern = /CVE-\d{4}-\d+/gi;
     const ipPattern = /\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b/g;
-    const domainPattern = /(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/gi;
+    const domainPattern = /\b([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]\b/gi;
     const sha256Pattern = /\b[a-f0-9]{64}\b/gi;
     const md5Pattern = /\b[a-f0-9]{32}\b/gi;
     

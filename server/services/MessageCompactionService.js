@@ -402,7 +402,7 @@ class MessageCompactionService {
    * Medium compression - Extract key sentences
    */
   _mediumCompression(content) {
-    const sentences = content.match(/[^.!?]+[.!?]+/g) || [];
+    const sentences = content.split(/(?<=[.!?])\s+/).filter(Boolean);
     
     // Keep sentences with important keywords
     const important = sentences.filter(sent => {
@@ -430,7 +430,7 @@ class MessageCompactionService {
    */
   _heavyCompression(content) {
     // Extract bullet points or numbered lists
-    const listItems = content.match(/(?:^|\n)[\s]*[•\-*\d]+\.?\s+([^\n]+)/gm);
+    const listItems = content.match(/^[ \t]*[•\-*\d]+\.?[ \t]+([\s\S]*?)(?=\n|$)/gm);
     if (listItems && listItems.length > 0) {
       return '[Summary] ' + listItems.slice(0, 3).join('; ');
     }

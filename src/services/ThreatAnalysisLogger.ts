@@ -104,7 +104,7 @@ class ThreatAnalysisLogger {
    * Start a new analysis session
    */
   startSession(): string {
-    this.currentSessionId = `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    this.currentSessionId = `session-${Date.now()}-${crypto.randomUUID()}`;
     this.analysisCount = 0;
     console.log(`[ThreatAnalysisLogger] Started new session: ${this.currentSessionId}`);
     

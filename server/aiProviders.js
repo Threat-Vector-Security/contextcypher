@@ -31,6 +31,8 @@ const AbortController = global.AbortController || (() => {
 })();
 const PROVIDER_TIMEOUT = 600000; // 10 minutes — diagram generation with large systems can take several minutes
 const axios = require('axios');
+const { safeOllamaUrl, validateOllamaBaseUrl } = require('./utils/ollamaUrl');
+
 const logger = require('./utils/logger-wrapper'); // Fixed logger import path
 const modelCapabilities = require('./utils/modelCapabilities');
 const webSearchConfig = require('./config/webSearchConfig');
@@ -195,6 +197,10 @@ class AIProviderManager {
             case 'local':
                 // For Ollama, we don't use the OpenAI SDK
                 // We'll store the config and use direct HTTP calls
+                const ollamaUrlValidation = validateOllamaBaseUrl(baseUrl);
+                if (!ollamaUrlValidation.valid) {
+                    throw new Error(ollamaUrlValidation.error);
+                }
                 safeConsole.log(`Local LLM (Ollama) baseURL: ${baseUrl}`);
                 
                 // Auto-detect WSL and provide helpful message
@@ -327,7 +333,7 @@ class AIProviderManager {
 
       case 'openai': {
         try {
-          const { data } = await axios.get(`https://api.openai.com/v1/models/${modelName}`, {
+          const { data } = await axios.get(`https://api.openai.com/v1/models/${encodeURIComponent(modelName)}`, {
             headers: { Authorization: `Bearer ${config.apiKey}` },
             timeout: 10000
           });
@@ -699,7 +705,7 @@ class AIProviderManager {
             
             // First check if Ollama is running
             logger.info(`Fetching Ollama models from: ${baseUrl}/api/tags`);
-            const tagsResponse = await fetch(`${baseUrl}/api/tags`);
+            const tagsResponse = await fetch(safeOllamaUrl(baseUrl, '/api/tags'));
             logger.info(`Ollama tags response status: ${tagsResponse.status}`);
             
             if (!tagsResponse.ok) {
@@ -722,7 +728,7 @@ class AIProviderManager {
             }
             
             // Test actual generation with minimal request
-            const testResponse = await fetch(`${baseUrl}/api/generate`, {
+            const testResponse = await fetch(safeOllamaUrl(baseUrl, '/api/generate'), {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -763,7 +769,7 @@ class AIProviderManager {
             
             // After successful test, fetch model info to get actual context window and GPU status
             try {
-              const modelInfoResponse = await fetch(`${baseUrl}/api/show`, {
+              const modelInfoResponse = await fetch(safeOllamaUrl(baseUrl, '/api/show'), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name: modelName })
@@ -818,18 +824,21 @@ class AIProviderManager {
                     detectedContextWindow = 32768; // Known context window for gpt-oss models
                   }
                   
-                  // If still no context window detected, check modelfile
-                  if (!detectedContextWindow && modelInfo.modelfile) {
-                    const modelfileMatch = modelInfo.modelfile.match(/num_ctx\s+(\d+)/i);
+                  // Limit string size to prevent ReDoS on massive modelfiles
+                  const modelfileSearch = modelInfo.modelfile ? modelInfo.modelfile.substring(0, 5000) : null;
+
+                  // If still no context window detected, check bounded modelfile content
+                  if (!detectedContextWindow && modelfileSearch) {
+                    const modelfileMatch = modelfileSearch.match(/num_ctx\s+(\d+)/i);
                     if (modelfileMatch) {
                       detectedContextWindow = parseInt(modelfileMatch[1]);
                       logger.info(`Context window found in modelfile: ${detectedContextWindow}`);
                     }
                   }
                   
-                  // Check modelfile for GPU layers if not found in parameters
-                  if (gpuLayers === null && modelInfo.modelfile) {
-                    const gpuMatch = modelInfo.modelfile.match(/(?:num_gpu|gpu_layers)\s+(\d+)/i);
+                  // Check bounded modelfile content for GPU layers if not found in parameters
+                  if (gpuLayers === null && modelfileSearch) {
+                    const gpuMatch = modelfileSearch.match(/(?:num_gpu|gpu_layers)\s+(\d+)/i);
                     if (gpuMatch) {
                       gpuLayers = parseInt(gpuMatch[1]);
                       logger.info(`GPU layers found in modelfile: ${gpuLayers}`);
@@ -844,14 +853,7 @@ class AIProviderManager {
                   }
                   
                   // Try to detect total layers from model architecture
-                  if (modelInfo.modelfile) {
-                    // Common patterns for layer count in model names
-                    const layerPatterns = [
-                      /(\d+)b/i,  // e.g., "7b" model might have ~32 layers
-                      /layers?[:\s]*(\d+)/i,
-                      /n_layers?[:\s]*(\d+)/i
-                    ];
-                    
+                  if (modelfileSearch) {
                     // Approximate layer counts for common model sizes
                     const modelSizeToLayers = {
                       '3b': 26,
@@ -913,7 +915,7 @@ class AIProviderManager {
                 // Check system GPU availability
                 try {
                   // Try to get GPU info from Ollama ps endpoint
-                  const psResponse = await fetch(`${baseUrl}/api/ps`);
+                  const psResponse = await fetch(safeOllamaUrl(baseUrl, '/api/ps'));
                   if (psResponse.ok) {
                     const psData = await psResponse.json();
                     logger.info('Ollama ps data:', psData);
@@ -936,7 +938,7 @@ class AIProviderManager {
                 // Check Ollama version for GPU support if not already detected
                 if (!gpuInfo.available) {
                   try {
-                    const versionResponse = await fetch(`${baseUrl}/api/version`);
+                    const versionResponse = await fetch(safeOllamaUrl(baseUrl, '/api/version'));
                     if (versionResponse.ok) {
                       const versionData = await versionResponse.json();
                       logger.info('Ollama version:', versionData);
@@ -1747,7 +1749,7 @@ class AIProviderManager {
             
             logger.info('Using special handling for Foundation-Sec model streaming (threat analysis mode)');
             
-            response = await fetch(`${baseUrl}/api/chat`, {
+            response = await fetch(safeOllamaUrl(baseUrl, '/api/chat'), {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -1776,7 +1778,7 @@ class AIProviderManager {
             });
           } else {
             // Use standard /api/chat for other models
-            response = await fetch(`${baseUrl}/api/chat`, {
+            response = await fetch(safeOllamaUrl(baseUrl, '/api/chat'), {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -2538,7 +2540,7 @@ class AIProviderManager {
           contextWindowConfig: contextWindow
         });
         
-        response = await fetch(`${baseUrl}/api/chat`, {
+        response = await fetch(safeOllamaUrl(baseUrl, '/api/chat'), {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -2578,7 +2580,7 @@ class AIProviderManager {
           totalMessageLength: formattedMessages.reduce((sum, msg) => sum + msg.content.length, 0)
         });
         
-        response = await fetch(`${baseUrl}/api/chat`, {
+        response = await fetch(safeOllamaUrl(baseUrl, '/api/chat'), {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -2660,7 +2662,7 @@ class AIProviderManager {
           if (userMessage) {
             const simplifiedPrompt = `Human: ${userMessage.content}\nAssistant:`;
             
-            const retryResponse = await fetch(`${baseUrl}/api/generate`, {
+            const retryResponse = await fetch(safeOllamaUrl(baseUrl, '/api/generate'), {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
