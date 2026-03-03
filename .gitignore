@@ -186,6 +186,9 @@ build-*.cmd
 .npmignore
 /api/package-lock.json
 README-npm.md
+README-USER.md
 bin/
 .vercel
+scripts/create-npm-package-json.js
+scripts/sync-version-npm.js
 
