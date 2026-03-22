@@ -11,6 +11,9 @@ import { getFrontendAppSecret } from '../utils/appSecret';
 import { isVercelDeployment } from '../utils/vercelDetection';
 
 // Convert diagram to compact Cypher format for AI analysis
+const escapeCypher = (str: string): string =>
+  str.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+
 const diagramToCypher = (diagram: DiagramData): string => {
   const cypherStatements: string[] = [];
   
@@ -158,7 +161,7 @@ const diagramToCypher = (diagram: DiagramData): string => {
     }
     
     const propsStr = Object.entries(props)
-      .map(([k, v]) => `${k}:'${String(v).replace(/'/g, "\\'")}'`)
+      .map(([k, v]) => `${k}:'${escapeCypher(String(v))}'`)
       .join(',');
     
     // Add special comment for DFD nodes with user-defined types
@@ -209,7 +212,7 @@ const diagramToCypher = (diagram: DiagramData): string => {
     if (!props.protocol && edge.data?.protocol) props.protocol = edge.data.protocol;
     
     const propsStr = Object.entries(props)
-      .map(([k, v]) => `${k}:'${String(v).replace(/'/g, "\\'")}'`)
+      .map(([k, v]) => `${k}:'${escapeCypher(String(v))}'`)
       .join(',');
     
     cypherStatements.push(

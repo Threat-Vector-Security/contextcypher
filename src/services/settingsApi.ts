@@ -164,9 +164,9 @@ export async function updateAIProvider(request: ProviderUpdateRequest): Promise<
             // Clear timeout on success
             if (timeoutId) clearTimeout(timeoutId);
 
-            console.log('Provider update response:', response.data);
+            console.log('Provider update response:', { success: response.data?.success, provider: response.data?.currentProvider });
 
-            // Store provider
+            // Store provider name (non-sensitive)
             if (request.provider && response.data.success) {
                 localStorage.setItem('currentProvider', request.provider);
             }
@@ -302,10 +302,7 @@ async function updateProviderOffline(request: ProviderUpdateRequest): Promise<Pr
         // Update localStorage for compatibility
         localStorage.setItem('currentProvider', request.provider);
         
-        console.log('Provider updated successfully (offline mode):', {
-            provider: request.provider,
-            llmMode: updatedSettings.api.llmMode
-        });
+        console.log('Provider updated successfully (offline mode):', request.provider);
         
         return {
             success: true,

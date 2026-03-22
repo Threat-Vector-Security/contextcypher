@@ -865,8 +865,8 @@ class AIProviderManager {
                       '180b': 100
                     };
                     
-                    // Try to match model size
-                    const sizeMatch = modelName.toLowerCase().match(/(\d+)b/);
+                    // Try to match model size (limit input length to prevent ReDoS)
+                    const sizeMatch = modelName.toLowerCase().slice(0, 100).match(/(\d{1,4})b/);
                     if (sizeMatch) {
                       const size = sizeMatch[0];
                       gpuInfo.totalLayers = modelSizeToLayers[size] || 0;

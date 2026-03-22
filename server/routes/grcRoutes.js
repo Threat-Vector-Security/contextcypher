@@ -11,13 +11,9 @@ const toNumberSafe = (value, fallback = 0) =>
 
 const isObject = (value) => typeof value === 'object' && value !== null && !Array.isArray(value);
 
+const XML_ENTITY_MAP = { amp: '&', lt: '<', gt: '>', quot: '"', '#39': "'" };
 const decodeXmlEntities = (value) =>
-  value
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'");
+  value.replace(/&(amp|lt|gt|quot|#39);/g, (_, entity) => XML_ENTITY_MAP[entity]);
 
 const normalizeHeader = (value) =>
   String(value || '')

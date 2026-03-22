@@ -237,13 +237,13 @@ router.post('/discover-gcp', async (req, res) => {
 /**
  * Get available AWS regions
  */
-router.get('/aws-regions', async (req, res) => {
+router.post('/aws-regions', async (req, res) => {
   try {
     const ec2Client = new EC2Client({
       region: 'us-east-1',
       credentials: {
-        accessKeyId: req.query.accessKeyId || '',
-        secretAccessKey: req.query.secretAccessKey || ''
+        accessKeyId: req.body.accessKeyId || '',
+        secretAccessKey: req.body.secretAccessKey || ''
       }
     });
 

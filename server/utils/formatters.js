@@ -5,6 +5,10 @@ const DiagramIndexReader = require('../services/DiagramIndexReader');
 const MessageCompactionService = require('../services/MessageCompactionService');
 const { getEndpointProfile, isLocalLLMModel } = require('../config/modelProfiles');
 
+function escapeCypher(str) {
+  return str.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+}
+
 // Helper: produce legend lines "CODE : Label (Zone)" for every non-zone node
 function buildLegend(diagram, indexer) {
   if (!diagram) return '';
@@ -205,7 +209,7 @@ function generateEnhancedCypher(diagram) {
         const props = {
             id: node.id,
             indexCode: indexCode || 'UNKNOWN',
-            label: (node.data?.label || node.id).replace(/'/g, "\\'")
+            label: escapeCypher(node.data?.label || node.id)
         };
 
         // Add all node data fields
@@ -214,7 +218,7 @@ function generateEnhancedCypher(diagram) {
             props.zone = node.data?.zone || 'Unknown';
             props.securityLevel = node.data?.securityLevel || 'Standard';
             props.dataClassification = node.data?.dataClassification || 'Internal';
-            
+
             // Include ALL other properties from node.data
             const fieldsToInclude = [
                 'description', 'vendor', 'product', 'version', 'technology',
@@ -224,10 +228,10 @@ function generateEnhancedCypher(diagram) {
                 // DFD categorization for enhanced threat modeling
                 'dfdCategory', 'dfdType'
             ];
-            
+
             fieldsToInclude.forEach(field => {
                 if (node.data?.[field]) {
-                    props[field] = String(node.data[field]).replace(/'/g, "\\'");
+                    props[field] = escapeCypher(String(node.data[field]));
                 }
             });
             
@@ -247,7 +251,7 @@ function generateEnhancedCypher(diagram) {
             // Security zone properties
             props.zoneType = node.data?.zoneType || 'Unknown';
             if (node.data?.description) {
-                props.description = node.data.description.replace(/'/g, "\\'");
+                props.description = escapeCypher(node.data.description);
             }
         }
 
@@ -295,7 +299,7 @@ function generateEnhancedCypher(diagram) {
                     if (Array.isArray(edge.data[key])) {
                         props[key] = edge.data[key].join(',');
                     } else {
-                        props[key] = String(edge.data[key]).replace(/'/g, "\\'");
+                        props[key] = escapeCypher(String(edge.data[key]));
                     }
                 }
             });

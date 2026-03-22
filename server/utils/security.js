@@ -127,17 +127,34 @@ function getCorsOptions() {
           logger.debug(`CORS request from origin: ${origin}`);
         }
 
-        if (!origin ||
-            origin.includes('localhost') ||
-            origin.includes('127.0.0.1') ||
-            origin.includes('172.') ||
-            origin.includes('192.168.') ||
-            origin.includes('10.') ||
-            origin.includes('tauri://') ||
-            origin.includes('file://')) {
+        // Allow requests with no origin (same-origin, curl, etc.)
+        if (!origin) {
           callback(null, true);
-        } else {
-          logger.warn(`CORS blocked request from origin: ${origin}`);
+          return;
+        }
+
+        // Allow non-HTTP schemes used by desktop apps
+        if (origin.startsWith('tauri://') || origin.startsWith('file://')) {
+          callback(null, true);
+          return;
+        }
+
+        // Parse the origin URL and validate the hostname exactly
+        try {
+          const url = new URL(origin);
+          const hostname = url.hostname;
+          const isAllowed =
+            hostname === 'localhost' ||
+            hostname === '127.0.0.1' ||
+            /^(10|172\.(1[6-9]|2\d|3[01])|192\.168)\.\d{1,3}\.\d{1,3}$/.test(hostname);
+          if (isAllowed) {
+            callback(null, true);
+          } else {
+            logger.warn(`CORS blocked request from origin: ${origin}`);
+            callback(new Error('Not allowed by CORS'));
+          }
+        } catch {
+          logger.warn(`CORS blocked request with invalid origin: ${origin}`);
           callback(new Error('Not allowed by CORS'));
         }
       };

@@ -14,6 +14,10 @@ const logger = (() => {
     }
 })();
 
+function escapeCypher(str) {
+  return str.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+}
+
 function convertJsonToCypher(jsonData, generationType) {
   const lines = [];
   
@@ -69,30 +73,30 @@ function convertJsonToCypher(jsonData, generationType) {
       // Build properties string
       const props = [
         `id:'${id}'`,
-        `label:'${comp.name.replace(/'/g, "\\'")}'`,
+        `label:'${escapeCypher(comp.name)}'`,
         `zone:'${zone}'`,
         `type:'${type}'`
       ];
       
       if (comp.description) {
-        props.push(`description:'${comp.description.replace(/'/g, "\\'")}'`);
+        props.push(`description:'${escapeCypher(comp.description)}'`);
       }
       
       // Add metadata fields if provided
       if (comp.vendor) {
-        props.push(`vendor:'${comp.vendor.replace(/'/g, "\\'")}'`);
+        props.push(`vendor:'${escapeCypher(comp.vendor)}'`);
       }
       if (comp.version) {
-        props.push(`version:'${comp.version.replace(/'/g, "\\'")}'`);
+        props.push(`version:'${escapeCypher(comp.version)}'`);
       }
       if (comp.product) {
-        props.push(`product:'${comp.product.replace(/'/g, "\\'")}'`);
+        props.push(`product:'${escapeCypher(comp.product)}'`);
       }
       if (comp.protocols && Array.isArray(comp.protocols) && comp.protocols.length > 0) {
-        props.push(`protocols:'${comp.protocols.join(',').replace(/'/g, "\\'")}'`);
+        props.push(`protocols:'${escapeCypher(comp.protocols.join(','))}'`);
       }
       if (comp.securityControls && Array.isArray(comp.securityControls) && comp.securityControls.length > 0) {
-        props.push(`securityControls:'${comp.securityControls.join(',').replace(/'/g, "\\'")}'`);
+        props.push(`securityControls:'${escapeCypher(comp.securityControls.join(','))}'`);
       }
       
       lines.push(`CREATE (${varName}:${type} {${props.join(', ')}})`);
@@ -120,13 +124,13 @@ function convertJsonToCypher(jsonData, generationType) {
         const label = conn.label || 'Connection';
         
         // Build edge properties
-        const edgeProps = [`label:'${label.replace(/'/g, "\\'")}'`];
+        const edgeProps = [`label:'${escapeCypher(label)}'`];
         
         if (conn.protocol) {
-          edgeProps.push(`protocol:'${conn.protocol.replace(/'/g, "\\'")}'`);
+          edgeProps.push(`protocol:'${escapeCypher(conn.protocol)}'`);
         }
         if (conn.encryption) {
-          edgeProps.push(`encryption:'${conn.encryption.replace(/'/g, "\\'")}'`);
+          edgeProps.push(`encryption:'${escapeCypher(conn.encryption)}'`);
         }
         
         lines.push(`MATCH (${fromComp.varName}), (${toComp.varName}) CREATE (${fromComp.varName})-[:CONNECTS {${edgeProps.join(', ')}}]->(${toComp.varName})`);

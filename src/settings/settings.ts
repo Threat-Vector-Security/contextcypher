@@ -136,8 +136,25 @@ export const loadSettings = (): AppSettings => {
   return mergedSettings;
 };
 
+// Strip any fields that should never be persisted
+const sanitizeForStorage = (settings: AppSettings): AppSettings => {
+  const clean = JSON.parse(JSON.stringify(settings));
+  // Defensive: remove any API key fields that may leak into the settings object
+  if (clean.api?.providerConfig) {
+    for (const provider of Object.values(clean.api.providerConfig) as Record<string, unknown>[]) {
+      if (provider && typeof provider === 'object') {
+        delete (provider as Record<string, unknown>).apiKey;
+        delete (provider as Record<string, unknown>).api_key;
+        delete (provider as Record<string, unknown>).secret;
+      }
+    }
+  }
+  return clean;
+};
+
 // Save settings to localStorage
 export const saveSettings = (settings: AppSettings): void => {
-  debugLog('Saving settings to localStorage:', settings);
-  localStorage.setItem('settings', JSON.stringify(settings));
+  const sanitized = sanitizeForStorage(settings);
+  debugLog('Saving settings to localStorage');
+  localStorage.setItem('settings', JSON.stringify(sanitized));
 };

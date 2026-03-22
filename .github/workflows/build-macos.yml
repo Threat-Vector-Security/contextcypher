@@ -1,13 +1,15 @@
 name: Build macOS installer
 
+# Disabled – not currently in use
 on:
   workflow_dispatch:
-  push:
-    tags:
-      - 'v*.*.*'
+
+permissions:
+  contents: read
 
 jobs:
   build-macos:
+    if: false
     runs-on: macos-13
 
     steps:

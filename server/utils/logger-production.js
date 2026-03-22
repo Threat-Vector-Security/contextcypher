@@ -85,44 +85,83 @@ function writeToLog(message) {
     }
 }
 
+// Redact sensitive values from log output
+const SENSITIVE_KEYS = /api[_-]?key|secret|password|token|authorization|credential|private[_-]?key/i;
+const SENSITIVE_PATTERNS = [
+    /sk-[a-zA-Z0-9]{20,}/g,
+    /key-[a-zA-Z0-9]{20,}/g,
+    /Bearer\s+[a-zA-Z0-9._-]{20,}/g,
+];
+
+function redactSensitive(value) {
+    if (typeof value === 'string') {
+        let result = value;
+        for (const pattern of SENSITIVE_PATTERNS) {
+            result = result.replace(pattern, '[REDACTED]');
+        }
+        return result;
+    }
+    if (typeof value === 'object' && value !== null && !(value instanceof Error)) {
+        try {
+            const redacted = Array.isArray(value) ? [...value] : { ...value };
+            for (const key of Object.keys(redacted)) {
+                if (SENSITIVE_KEYS.test(key)) {
+                    redacted[key] = '[REDACTED]';
+                } else if (typeof redacted[key] === 'object' && redacted[key] !== null) {
+                    redacted[key] = redactSensitive(redacted[key]);
+                }
+            }
+            return redacted;
+        } catch (e) {
+            return value;
+        }
+    }
+    return value;
+}
+
 // Format log message
 function formatLog(level, ...args) {
     const timestamp = new Date().toISOString();
-    
+
     const formattedArgs = args.map(arg => {
-        if (typeof arg === 'object' && arg !== null) {
+        const sanitized = redactSensitive(arg);
+        if (typeof sanitized === 'object' && sanitized !== null) {
             if (arg instanceof Error) {
                 return `${arg.message}\n${arg.stack}`;
             }
             try {
-                return JSON.stringify(arg, null, 2);
+                return JSON.stringify(sanitized, null, 2);
             } catch (e) {
                 return '[Circular Reference]';
             }
         }
-        return String(arg);
+        return String(sanitized);
     });
-    
+
     return `${timestamp} [${level}] ${formattedArgs.join(' ')}`;
 }
 
 // Export logger functions
 module.exports = {
     info: (...args) => {
-        console.log(...args);
+        const sanitized = args.map(redactSensitive);
+        console.log(...sanitized);
         writeToLog(formatLog('INFO', ...args));
     },
     error: (...args) => {
-        console.error(...args);
+        const sanitized = args.map(redactSensitive);
+        console.error(...sanitized);
         writeToLog(formatLog('ERROR', ...args));
     },
     warn: (...args) => {
-        console.warn(...args);
+        const sanitized = args.map(redactSensitive);
+        console.warn(...sanitized);
         writeToLog(formatLog('WARN', ...args));
     },
     debug: (...args) => {
         if (process.env.NODE_ENV !== 'production') {
-            console.debug(...args);
+            const sanitized = args.map(redactSensitive);
+            console.debug(...sanitized);
             writeToLog(formatLog('DEBUG', ...args));
         }
     },

@@ -136,47 +136,82 @@ function writeToLog(message) {
     }
 }
 
+// Redact sensitive values from log output
+const SENSITIVE_KEYS = /api[_-]?key|secret|password|token|authorization|credential|private[_-]?key/i;
+const SENSITIVE_PATTERNS = [
+    /sk-[a-zA-Z0-9]{20,}/g,            // OpenAI API keys
+    /key-[a-zA-Z0-9]{20,}/g,           // Generic API keys
+    /Bearer\s+[a-zA-Z0-9._-]{20,}/g,   // Bearer tokens
+];
+
+function redactSensitive(value) {
+    if (typeof value === 'string') {
+        let result = value;
+        for (const pattern of SENSITIVE_PATTERNS) {
+            result = result.replace(pattern, '[REDACTED]');
+        }
+        return result;
+    }
+    if (typeof value === 'object' && value !== null && !(value instanceof Error)) {
+        const redacted = Array.isArray(value) ? [...value] : { ...value };
+        for (const key of Object.keys(redacted)) {
+            if (SENSITIVE_KEYS.test(key)) {
+                redacted[key] = '[REDACTED]';
+            } else if (typeof redacted[key] === 'object' && redacted[key] !== null) {
+                redacted[key] = redactSensitive(redacted[key]);
+            }
+        }
+        return redacted;
+    }
+    return value;
+}
+
 // Format log message with support for multiple arguments
 function formatLog(level, ...args) {
     const timestamp = new Date().toISOString();
-    
+
     // Handle multiple arguments
     const formattedArgs = args.map(arg => {
-        if (typeof arg === 'object' && arg !== null) {
+        const sanitized = redactSensitive(arg);
+        if (typeof sanitized === 'object' && sanitized !== null) {
             // For Error objects, include message and stack
             if (arg instanceof Error) {
                 return `${arg.message}\n${arg.stack}`;
             }
-            return JSON.stringify(arg, null, 2);
+            return JSON.stringify(sanitized, null, 2);
         }
-        return arg;
+        return sanitized;
     });
-    
+
     const formattedMessage = formattedArgs.join(' ');
-    
+
     return `${timestamp} [${level}] ${formattedMessage}`;
 }
 
 // Export logger functions with support for multiple arguments
 module.exports = {
     info: (...args) => {
+        const sanitized = args.map(redactSensitive);
         const logMessage = formatLog('INFO', ...args);
-        console.log(...args);
+        console.log(...sanitized);
         writeToLog(logMessage);
     },
     error: (...args) => {
+        const sanitized = args.map(redactSensitive);
         const logMessage = formatLog('ERROR', ...args);
-        console.error(...args);
+        console.error(...sanitized);
         writeToLog(logMessage);
     },
     warn: (...args) => {
+        const sanitized = args.map(redactSensitive);
         const logMessage = formatLog('WARN', ...args);
-        console.warn(...args);
+        console.warn(...sanitized);
         writeToLog(logMessage);
     },
     debug: (...args) => {
+        const sanitized = args.map(redactSensitive);
         const logMessage = formatLog('DEBUG', ...args);
-        console.debug(...args);
+        console.debug(...sanitized);
         writeToLog(logMessage);
     }
 };

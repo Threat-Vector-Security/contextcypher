@@ -52,6 +52,14 @@ function sanitizeDiagramId(id) {
   return trimmed;
 }
 
+function safePath(baseDir, filename) {
+  const resolved = path.resolve(baseDir, filename);
+  if (!resolved.startsWith(path.resolve(baseDir) + path.sep)) {
+    throw new Error('Path traversal detected');
+  }
+  return resolved;
+}
+
 const fs = require('fs');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
@@ -3320,7 +3328,7 @@ app.post('/api/chat', async (req, res) => {
       try {
         const safeId = sanitizeDiagramId(diagramId);
         if (!safeId) throw new Error('Invalid diagram ID');
-        const diagramPath = path.join(DIAGRAMS_DIR, `${safeId}.json`);
+        const diagramPath = safePath(DIAGRAMS_DIR, `${safeId}.json`);
         const diagramData = await fs.promises.readFile(diagramPath, 'utf8');
         diagram = JSON.parse(diagramData);
         logger.info(`Loaded diagram ${diagramId}`);
@@ -3350,7 +3358,7 @@ app.post('/api/chat', async (req, res) => {
           try {
             const safeId = sanitizeDiagramId(diagramId);
             if (!safeId) throw new Error('Invalid diagram ID for threat intelligence lookup');
-            const threatIntelPath = path.join(THREAT_INTEL_DIR, `${safeId}.json`);
+            const threatIntelPath = safePath(THREAT_INTEL_DIR, `${safeId}.json`);
             const threatIntelData = await fs.promises.readFile(threatIntelPath, 'utf8');
             threatIntel = JSON.parse(threatIntelData);
             logger.info(`Loaded threat intelligence data for diagram ${diagramId}`);
@@ -3703,7 +3711,7 @@ app.post('/api/chat/stream', async (req, res) => {
       try {
         const safeId = sanitizeDiagramId(diagramId);
         if (!safeId) throw new Error('Invalid diagram ID');
-        const diagramPath = path.join(DIAGRAMS_DIR, `${safeId}.json`);
+        const diagramPath = safePath(DIAGRAMS_DIR, `${safeId}.json`);
         const diagramData = await fs.promises.readFile(diagramPath, 'utf8');
         diagram = JSON.parse(diagramData);
         logger.info(`Loaded diagram ${diagramId}`);
@@ -3722,7 +3730,7 @@ app.post('/api/chat/stream', async (req, res) => {
           try {
             const safeId = sanitizeDiagramId(diagramId);
             if (!safeId) throw new Error('Invalid diagram ID for threat intelligence lookup');
-            const threatIntelPath = path.join(THREAT_INTEL_DIR, `${safeId}.json`);
+            const threatIntelPath = safePath(THREAT_INTEL_DIR, `${safeId}.json`);
             const threatIntelData = await fs.promises.readFile(threatIntelPath, 'utf8');
             threatIntel = JSON.parse(threatIntelData);
             logger.info(`Loaded threat intelligence data for diagram ${diagramId}`);

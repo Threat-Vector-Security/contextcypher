@@ -6,8 +6,9 @@ const zlib = require('zlib');
 const KB_DIR = path.join(__dirname, '..', 'server', 'data', 'security-knowledge-base');
 const DATA_DIR = path.join(__dirname, '..', 'data', 'security-knowledge-base');
 
+const XML_ENTITY_MAP = { amp: '&', lt: '<', gt: '>', quot: '"', '#39': "'" };
 const decodeXmlEntities = (v) =>
-  v.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+  v.replace(/&(amp|lt|gt|quot|#39);/g, (_, entity) => XML_ENTITY_MAP[entity]);
 
 const lettersToIndex = (letters) =>
   letters.split('').reduce((idx, ch) => idx * 26 + (ch.charCodeAt(0) - 64), 0) - 1;

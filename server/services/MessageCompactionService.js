@@ -430,7 +430,7 @@ class MessageCompactionService {
    */
   _heavyCompression(content) {
     // Extract bullet points or numbered lists
-    const listItems = content.match(/^[ \t]*[•\-*\d]+\.?[ \t]+([\s\S]*?)(?=\n|$)/gm);
+    const listItems = content.match(/^[ \t]*[•\-*\d]+\.?[ \t]+[^\n]*/gm);
     if (listItems && listItems.length > 0) {
       return '[Summary] ' + listItems.slice(0, 3).join('; ');
     }

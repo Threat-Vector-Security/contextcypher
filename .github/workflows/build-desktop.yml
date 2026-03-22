@@ -1,13 +1,15 @@
 name: Build desktop installers (macOS & Linux)
 
+# Disabled – not currently in use
 on:
   workflow_dispatch:
-  push:
-    tags:
-      - 'v*.*.*'
+
+permissions:
+  contents: read
 
 jobs:
   build:
+    if: false
     strategy:
       fail-fast: false
       matrix:

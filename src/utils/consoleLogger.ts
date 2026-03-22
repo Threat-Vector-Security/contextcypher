@@ -15,12 +15,22 @@ const originalConsole = {
   debug: console.debug
 };
 
+const SENSITIVE_PATTERN = /sk-[a-zA-Z0-9]{20,}|key-[a-zA-Z0-9]{20,}|Bearer\s+[a-zA-Z0-9._-]{20,}/g;
+const SENSITIVE_KEYS = /api[_-]?key|secret|password|token|authorization|credential|private[_-]?key/i;
+
+function redactString(str: string): string {
+  return str.replace(SENSITIVE_PATTERN, '[REDACTED]');
+}
+
 function formatLogEntry(level: string, args: any[]): string {
   const timestamp = new Date().toISOString();
   const message = args.map(arg => {
     if (typeof arg === 'object') {
       try {
-        const serialized = JSON.stringify(arg);
+        const serialized = JSON.stringify(arg, (key, value) => {
+          if (key && SENSITIVE_KEYS.test(key)) return '[REDACTED]';
+          return value;
+        });
         if (serialized.length > 1000) {
           return `${serialized.slice(0, 1000)}... [truncated ${serialized.length - 1000} chars]`;
         }
@@ -29,9 +39,9 @@ function formatLogEntry(level: string, args: any[]): string {
         return String(arg);
       }
     }
-    return String(arg);
+    return redactString(String(arg));
   }).join(' ');
-  
+
   return `[${timestamp}] [${level}] ${message}`;
 }
 
