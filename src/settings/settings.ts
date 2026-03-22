@@ -9,6 +9,14 @@ const debugLog = (...args: unknown[]) => {
   }
 };
 
+const summarizeSettingsForDebug = (settings?: Partial<AppSettings> | null) => ({
+  hasSettings: !!settings,
+  provider: settings?.api?.provider,
+  llmMode: settings?.api?.llmMode,
+  theme: settings?.theme,
+  recentDiagramCount: settings?.recentDiagramFiles?.length || 0
+});
+
 // Use the imported default settings to ensure consistency
 export const defaultSettings = importedDefaultSettings;
 
@@ -16,16 +24,16 @@ export const defaultSettings = importedDefaultSettings;
 export const loadSettings = (): AppSettings => {
   const savedSettings = localStorage.getItem('settings');
   
-  debugLog('Loading settings from localStorage:', savedSettings);
+  debugLog('Loading settings from localStorage');
   
   if (!savedSettings) {
-    debugLog('No saved settings found, using defaults:', defaultSettings);
+    debugLog('No saved settings found; using defaults', summarizeSettingsForDebug(defaultSettings));
     return defaultSettings;
   }
   
   // Parse saved settings
   const parsedSettings = JSON.parse(savedSettings) as Partial<AppSettings>;
-  debugLog('Parsed settings:', parsedSettings);
+  debugLog('Parsed settings summary:', summarizeSettingsForDebug(parsedSettings));
   
   // Migrate old bundled AI settings to local LLM
   if (parsedSettings.api) {
@@ -132,29 +140,153 @@ export const loadSettings = (): AppSettings => {
       : (defaultSettings.recentDiagramFiles || [])
   };
   
-  debugLog('Final merged settings:', mergedSettings);
+  debugLog('Final merged settings summary:', summarizeSettingsForDebug(mergedSettings));
   return mergedSettings;
 };
 
-// Strip any fields that should never be persisted
-const sanitizeForStorage = (settings: AppSettings): AppSettings => {
-  const clean = JSON.parse(JSON.stringify(settings));
-  // Defensive: remove any API key fields that may leak into the settings object
-  if (clean.api?.providerConfig) {
-    for (const provider of Object.values(clean.api.providerConfig) as Record<string, unknown>[]) {
-      if (provider && typeof provider === 'object') {
-        delete (provider as Record<string, unknown>).apiKey;
-        delete (provider as Record<string, unknown>).api_key;
-        delete (provider as Record<string, unknown>).secret;
+// Build an allow-listed settings payload so credentials never reach localStorage.
+export const buildPersistedSettings = (settings: AppSettings): AppSettings => {
+  const providerConfig = settings.api.providerConfig || {};
+
+  return {
+    api: {
+      llmMode: settings.api.llmMode,
+      provider: settings.api.provider,
+      localLLM: {
+        baseUrl: settings.api.localLLM.baseUrl,
+        model: settings.api.localLLM.model,
+        temperature: settings.api.localLLM.temperature,
+        maxTokens: settings.api.localLLM.maxTokens,
+        ...(settings.api.localLLM.contextWindow !== undefined ? { contextWindow: settings.api.localLLM.contextWindow } : {}),
+        ...(settings.api.localLLM.gpuMemoryFraction !== undefined ? { gpuMemoryFraction: settings.api.localLLM.gpuMemoryFraction } : {}),
+        ...(settings.api.localLLM.numThreads !== undefined ? { numThreads: settings.api.localLLM.numThreads } : {}),
+        ...(settings.api.localLLM.batchSize !== undefined ? { batchSize: settings.api.localLLM.batchSize } : {}),
+        ...(settings.api.localLLM.gpuOverhead !== undefined ? { gpuOverhead: settings.api.localLLM.gpuOverhead } : {}),
+        ...(settings.api.localLLM.numParallel !== undefined ? { numParallel: settings.api.localLLM.numParallel } : {}),
+        ...(settings.api.localLLM.maxLoadedModels !== undefined ? { maxLoadedModels: settings.api.localLLM.maxLoadedModels } : {}),
+        ...(settings.api.localLLM.keepAlive !== undefined ? { keepAlive: settings.api.localLLM.keepAlive } : {}),
+        ...(settings.api.localLLM.gpuLayers !== undefined ? { gpuLayers: settings.api.localLLM.gpuLayers } : {}),
+        ...(settings.api.localLLM.selectedGPU !== undefined ? { selectedGPU: settings.api.localLLM.selectedGPU } : {})
+      },
+      providerConfig: {
+        ...(providerConfig.openai ? {
+          openai: {
+            organizationId: providerConfig.openai.organizationId,
+            model: providerConfig.openai.model,
+            reasoningEffort: providerConfig.openai.reasoningEffort
+          }
+        } : {}),
+        ...(providerConfig.anthropic ? {
+          anthropic: {
+            model: providerConfig.anthropic.model
+          }
+        } : {}),
+        ...(providerConfig.gemini ? {
+          gemini: {
+            projectId: providerConfig.gemini.projectId,
+            model: providerConfig.gemini.model
+          }
+        } : {})
       }
-    }
-  }
-  return clean;
+    },
+    theme: settings.theme,
+    customTheme: settings.customTheme,
+    responseMode: settings.responseMode,
+    autosave: {
+      enabled: settings.autosave.enabled,
+      intervalMinutes: settings.autosave.intervalMinutes
+    },
+    license: {
+      accepted: settings.license.accepted,
+      acceptedDate: settings.license.acceptedDate,
+      version: settings.license.version
+    },
+    effects: {
+      enabled: settings.effects.enabled,
+      particles: settings.effects.particles,
+      animations: settings.effects.animations,
+      neon: settings.effects.neon,
+      glitch: settings.effects.glitch,
+      matrix: settings.effects.matrix
+    },
+    chatHistoryLogging: {
+      enabled: settings.chatHistoryLogging.enabled,
+      logFilePath: settings.chatHistoryLogging.logFilePath,
+      userHasSetPreference: settings.chatHistoryLogging.userHasSetPreference
+    },
+    chatWebSearch: settings.chatWebSearch ? {
+      enabled: settings.chatWebSearch.enabled,
+      maxSearches: settings.chatWebSearch.maxSearches,
+      domainCategories: [...settings.chatWebSearch.domainCategories]
+    } : undefined,
+    sanitization: {
+      enabled: settings.sanitization.enabled,
+      showNotices: settings.sanitization.showNotices
+    },
+    threatAnalysisLogging: {
+      enabled: settings.threatAnalysisLogging.enabled,
+      logFilePath: settings.threatAnalysisLogging.logFilePath,
+      includeFullContext: settings.threatAnalysisLogging.includeFullContext,
+      includeNodeData: settings.threatAnalysisLogging.includeNodeData,
+      includeAnalysisSettings: settings.threatAnalysisLogging.includeAnalysisSettings,
+      logLevel: settings.threatAnalysisLogging.logLevel,
+      userHasSetPreference: settings.threatAnalysisLogging.userHasSetPreference
+    },
+    snapToGrid: settings.snapToGrid,
+    themeAwareNodeColors: settings.themeAwareNodeColors,
+    useFloatingWindows: settings.useFloatingWindows,
+    edgeStyle: settings.edgeStyle,
+    edgeMode: settings.edgeMode,
+    threatAnalysis: {
+      mode: settings.threatAnalysis.mode,
+      batchLimit: settings.threatAnalysis.batchLimit,
+      warnOnHighTokenUsage: settings.threatAnalysis.warnOnHighTokenUsage,
+      highTokenThreshold: settings.threatAnalysis.highTokenThreshold,
+      targetedModeEnabled: settings.threatAnalysis.targetedModeEnabled,
+      webSearch: settings.threatAnalysis.webSearch ? {
+        enabled: settings.threatAnalysis.webSearch.enabled,
+        maxSearchesPerComponent: settings.threatAnalysis.webSearch.maxSearchesPerComponent,
+        maxSearchesPerAnalysis: settings.threatAnalysis.webSearch.maxSearchesPerAnalysis,
+        domainCategories: [...settings.threatAnalysis.webSearch.domainCategories]
+      } : undefined
+    },
+    secOps: {
+      enabled: settings.secOps.enabled,
+      features: {
+        atpMapping: settings.secOps.features.atpMapping,
+        ttpCoverage: settings.secOps.features.ttpCoverage,
+        detectionGaps: settings.secOps.features.detectionGaps,
+        huntingQueries: settings.secOps.features.huntingQueries
+      },
+      analysisDepth: settings.secOps.analysisDepth,
+      threatIntel: {
+        localSources: [...settings.secOps.threatIntel.localSources],
+        externalFeeds: {
+          enabled: settings.secOps.threatIntel.externalFeeds.enabled,
+          urls: [...settings.secOps.threatIntel.externalFeeds.urls]
+        }
+      }
+    },
+    secureStorage: settings.secureStorage ? {
+      enabled: settings.secureStorage.enabled
+    } : undefined,
+    nodeDisplayMode: settings.nodeDisplayMode,
+    debugPanelEnabled: settings.debugPanelEnabled,
+    onboarding: settings.onboarding ? {
+      showInitialDiagramPrompt: settings.onboarding.showInitialDiagramPrompt,
+      tutorialCompleted: settings.onboarding.tutorialCompleted
+    } : undefined,
+    recentDiagramFiles: settings.recentDiagramFiles?.map((entry) => ({
+      id: entry.id,
+      name: entry.name,
+      lastOpenedAt: entry.lastOpenedAt
+    }))
+  };
 };
 
 // Save settings to localStorage
 export const saveSettings = (settings: AppSettings): void => {
-  const sanitized = sanitizeForStorage(settings);
+  const persistedSettings = buildPersistedSettings(settings);
   debugLog('Saving settings to localStorage');
-  localStorage.setItem('settings', JSON.stringify(sanitized));
+  localStorage.setItem('settings', JSON.stringify(persistedSettings));
 };

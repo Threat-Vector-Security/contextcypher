@@ -107,7 +107,7 @@ function redactSensitive(value) {
             for (const key of Object.keys(redacted)) {
                 if (SENSITIVE_KEYS.test(key)) {
                     redacted[key] = '[REDACTED]';
-                } else if (typeof redacted[key] === 'object' && redacted[key] !== null) {
+                } else {
                     redacted[key] = redactSensitive(redacted[key]);
                 }
             }
@@ -119,16 +119,27 @@ function redactSensitive(value) {
     return value;
 }
 
+function formatError(error) {
+    const parts = [error.message, error.stack].filter(Boolean).join('\n');
+    return redactSensitive(parts);
+}
+
+function formatConsoleSummary(level, args) {
+    const timestamp = new Date().toISOString();
+    return `${timestamp} [${level}] ${args.length} log argument(s) captured. Detailed output written to the server log.`;
+}
+
 // Format log message
 function formatLog(level, ...args) {
     const timestamp = new Date().toISOString();
 
     const formattedArgs = args.map(arg => {
+        if (arg instanceof Error) {
+            return formatError(arg);
+        }
+
         const sanitized = redactSensitive(arg);
         if (typeof sanitized === 'object' && sanitized !== null) {
-            if (arg instanceof Error) {
-                return `${arg.message}\n${arg.stack}`;
-            }
             try {
                 return JSON.stringify(sanitized, null, 2);
             } catch (e) {
@@ -144,24 +155,20 @@ function formatLog(level, ...args) {
 // Export logger functions
 module.exports = {
     info: (...args) => {
-        const sanitized = args.map(redactSensitive);
-        console.log(...sanitized);
+        console.log(formatConsoleSummary('INFO', args));
         writeToLog(formatLog('INFO', ...args));
     },
     error: (...args) => {
-        const sanitized = args.map(redactSensitive);
-        console.error(...sanitized);
+        console.error(formatConsoleSummary('ERROR', args));
         writeToLog(formatLog('ERROR', ...args));
     },
     warn: (...args) => {
-        const sanitized = args.map(redactSensitive);
-        console.warn(...sanitized);
+        console.warn(formatConsoleSummary('WARN', args));
         writeToLog(formatLog('WARN', ...args));
     },
     debug: (...args) => {
         if (process.env.NODE_ENV !== 'production') {
-            const sanitized = args.map(redactSensitive);
-            console.debug(...sanitized);
+            console.debug(formatConsoleSummary('DEBUG', args));
             writeToLog(formatLog('DEBUG', ...args));
         }
     },

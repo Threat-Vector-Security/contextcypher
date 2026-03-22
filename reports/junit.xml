@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="3" failures="0" errors="0" time="72.566">
+  <testsuite name="src/settings/__tests__/settings.test.ts" errors="0" failures="0" skipped="0" timestamp="2026-03-22T22:12:51" time="30.467" tests="3">
+    <testcase classname="settings recent diagram files returns defaults when no saved settings exist" name="settings recent diagram files returns defaults when no saved settings exist" time="0.014">
+    </testcase>
+    <testcase classname="settings recent diagram files filters invalid recent file entries and normalizes timestamps" name="settings recent diagram files filters invalid recent file entries and normalizes timestamps" time="0.002">
+    </testcase>
+    <testcase classname="settings recent diagram files does not persist credential-like fields in settings storage" name="settings recent diagram files does not persist credential-like fields in settings storage" time="0.001">
+    </testcase>
+  </testsuite>
+</testsuites>

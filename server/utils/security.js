@@ -46,6 +46,52 @@ function getServerHost() {
   }
 }
 
+function isAllowedLocalOrigin(origin, options = {}) {
+  const { allowPrivateNetworkHosts = false } = options;
+
+  if (!origin) {
+    return true;
+  }
+
+  if (origin.startsWith('tauri://') || origin.startsWith('file://')) {
+    return true;
+  }
+
+  try {
+    const url = new URL(origin);
+    const hostname = url.hostname;
+
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+      return false;
+    }
+
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+      return true;
+    }
+
+    return allowPrivateNetworkHosts &&
+      /^(10|172\.(1[6-9]|2\d|3[01])|192\.168)\.\d{1,3}\.\d{1,3}$/.test(hostname);
+  } catch {
+    return false;
+  }
+}
+
+function createOriginValidator(env, options = {}) {
+  return function(origin, callback) {
+    if (origin) {
+      logger.debug(`CORS request from origin: ${origin}`);
+    }
+
+    if (isAllowedLocalOrigin(origin, options)) {
+      callback(null, true);
+      return;
+    }
+
+    logger.warn(`CORS blocked request from origin: ${origin || 'NO ORIGIN'} in environment: ${env}`);
+    callback(new Error('Not allowed by CORS'));
+  };
+}
+
 function getCorsOptions() {
   const env = process.env.NODE_ENV || 'development';
 
@@ -122,46 +168,11 @@ function getCorsOptions() {
       break;
 
     case 'development':
-      corsOptions.origin = function (origin, callback) {
-        if (origin) {
-          logger.debug(`CORS request from origin: ${origin}`);
-        }
-
-        // Allow requests with no origin (same-origin, curl, etc.)
-        if (!origin) {
-          callback(null, true);
-          return;
-        }
-
-        // Allow non-HTTP schemes used by desktop apps
-        if (origin.startsWith('tauri://') || origin.startsWith('file://')) {
-          callback(null, true);
-          return;
-        }
-
-        // Parse the origin URL and validate the hostname exactly
-        try {
-          const url = new URL(origin);
-          const hostname = url.hostname;
-          const isAllowed =
-            hostname === 'localhost' ||
-            hostname === '127.0.0.1' ||
-            /^(10|172\.(1[6-9]|2\d|3[01])|192\.168)\.\d{1,3}\.\d{1,3}$/.test(hostname);
-          if (isAllowed) {
-            callback(null, true);
-          } else {
-            logger.warn(`CORS blocked request from origin: ${origin}`);
-            callback(new Error('Not allowed by CORS'));
-          }
-        } catch {
-          logger.warn(`CORS blocked request with invalid origin: ${origin}`);
-          callback(new Error('Not allowed by CORS'));
-        }
-      };
+      corsOptions.origin = createOriginValidator(env, { allowPrivateNetworkHosts: true });
       break;
 
     case 'test':
-      corsOptions.origin = true;
+      corsOptions.origin = createOriginValidator(env);
       break;
 
     default:

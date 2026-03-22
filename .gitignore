@@ -26,6 +26,7 @@ server/node_modules
 .env.development.local
 .env.test.local
 .env.production.local
+GEMINI.md
 
 npm-debug.log*
 yarn-debug.log*
@@ -42,6 +43,7 @@ server/project_structure.txt
 
 Notes.md
 Notes
+CLAUDE.md
 
 # Large model files and binaries
 /models/

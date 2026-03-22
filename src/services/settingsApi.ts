@@ -166,11 +166,6 @@ export async function updateAIProvider(request: ProviderUpdateRequest): Promise<
 
             console.log('Provider update response:', { success: response.data?.success, provider: response.data?.currentProvider });
 
-            // Store provider name (non-sensitive)
-            if (request.provider && response.data.success) {
-                localStorage.setItem('currentProvider', request.provider);
-            }
-
             if (response.data.error) {
                 throw new Error(response.data.error);
             }
@@ -180,7 +175,10 @@ export async function updateAIProvider(request: ProviderUpdateRequest): Promise<
             // If backend responded with an error (i.e. we received an HTTP response),
             // propagate the error so outer catch can surface it to the UI.
             if (axios.isAxiosError(err) && err.response) {
-                console.warn('Backend responded with error – not falling back to offline mode', err.response.status, err.response.data);
+                console.warn('Backend responded with error; not falling back to offline mode', {
+                    status: err.response.status,
+                    message: err.response.data?.message || err.response.data?.error
+                });
                 throw err; // handled by outer catch block
             }
 
@@ -298,10 +296,7 @@ async function updateProviderOffline(request: ProviderUpdateRequest): Promise<Pr
         
         // Save updated settings
         saveSettings(updatedSettings);
-        
-        // Update localStorage for compatibility
-        localStorage.setItem('currentProvider', request.provider);
-        
+
         console.log('Provider updated successfully (offline mode):', request.provider);
         
         return {
@@ -400,7 +395,7 @@ async function validateProviderOffline(request: ProviderUpdateRequest): Promise<
 }
 
 export function getCurrentProvider(): AIProvider {
-    return (localStorage.getItem('currentProvider') as AIProvider) || 'openai';
+    return loadSettings().api.provider || 'openai';
 }
 
 export function isDevelopment(): boolean {

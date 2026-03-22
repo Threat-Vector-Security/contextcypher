@@ -157,7 +157,7 @@ function redactSensitive(value) {
         for (const key of Object.keys(redacted)) {
             if (SENSITIVE_KEYS.test(key)) {
                 redacted[key] = '[REDACTED]';
-            } else if (typeof redacted[key] === 'object' && redacted[key] !== null) {
+            } else {
                 redacted[key] = redactSensitive(redacted[key]);
             }
         }
@@ -166,21 +166,31 @@ function redactSensitive(value) {
     return value;
 }
 
+function formatError(error) {
+    const parts = [error.message, error.stack].filter(Boolean).join('\n');
+    return redactSensitive(parts);
+}
+
+function formatConsoleSummary(level, args) {
+    const timestamp = new Date().toISOString();
+    return `${timestamp} [${level}] ${args.length} log argument(s) captured. Detailed output written to the server log.`;
+}
+
 // Format log message with support for multiple arguments
 function formatLog(level, ...args) {
     const timestamp = new Date().toISOString();
 
     // Handle multiple arguments
     const formattedArgs = args.map(arg => {
+        if (arg instanceof Error) {
+            return formatError(arg);
+        }
+
         const sanitized = redactSensitive(arg);
         if (typeof sanitized === 'object' && sanitized !== null) {
-            // For Error objects, include message and stack
-            if (arg instanceof Error) {
-                return `${arg.message}\n${arg.stack}`;
-            }
             return JSON.stringify(sanitized, null, 2);
         }
-        return sanitized;
+        return String(sanitized);
     });
 
     const formattedMessage = formattedArgs.join(' ');
@@ -191,27 +201,23 @@ function formatLog(level, ...args) {
 // Export logger functions with support for multiple arguments
 module.exports = {
     info: (...args) => {
-        const sanitized = args.map(redactSensitive);
         const logMessage = formatLog('INFO', ...args);
-        console.log(...sanitized);
+        console.log(formatConsoleSummary('INFO', args));
         writeToLog(logMessage);
     },
     error: (...args) => {
-        const sanitized = args.map(redactSensitive);
         const logMessage = formatLog('ERROR', ...args);
-        console.error(...sanitized);
+        console.error(formatConsoleSummary('ERROR', args));
         writeToLog(logMessage);
     },
     warn: (...args) => {
-        const sanitized = args.map(redactSensitive);
         const logMessage = formatLog('WARN', ...args);
-        console.warn(...sanitized);
+        console.warn(formatConsoleSummary('WARN', args));
         writeToLog(logMessage);
     },
     debug: (...args) => {
-        const sanitized = args.map(redactSensitive);
         const logMessage = formatLog('DEBUG', ...args);
-        console.debug(...sanitized);
+        console.debug(formatConsoleSummary('DEBUG', args));
         writeToLog(logMessage);
     }
 };

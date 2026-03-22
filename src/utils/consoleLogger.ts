@@ -1,8 +1,8 @@
-// Browser-based console logger that stores logs in memory and localStorage
-// Replaces Tauri file system logging
+// Browser-based console logger that keeps logs in memory only.
+// Replaces Tauri file system logging without persisting log contents in web storage.
 
 const MAX_LOG_ENTRIES = 100;
-const STORAGE_KEY = 'contextcypher_console_logs';
+const LEGACY_STORAGE_KEY = 'contextcypher_console_logs';
 let logBuffer: string[] = [];
 let isInitialized = false;
 
@@ -22,15 +22,31 @@ function redactString(str: string): string {
   return str.replace(SENSITIVE_PATTERN, '[REDACTED]');
 }
 
+function redactValue(value: any): any {
+  if (typeof value === 'string') {
+    return redactString(value);
+  }
+
+  if (Array.isArray(value)) {
+    return value.map((entry) => redactValue(entry));
+  }
+
+  if (value && typeof value === 'object') {
+    return Object.entries(value).reduce<Record<string, any>>((acc, [key, entryValue]) => {
+      acc[key] = SENSITIVE_KEYS.test(key) ? '[REDACTED]' : redactValue(entryValue);
+      return acc;
+    }, {});
+  }
+
+  return value;
+}
+
 function formatLogEntry(level: string, args: any[]): string {
   const timestamp = new Date().toISOString();
   const message = args.map(arg => {
     if (typeof arg === 'object') {
       try {
-        const serialized = JSON.stringify(arg, (key, value) => {
-          if (key && SENSITIVE_KEYS.test(key)) return '[REDACTED]';
-          return value;
-        });
+        const serialized = JSON.stringify(redactValue(arg));
         if (serialized.length > 1000) {
           return `${serialized.slice(0, 1000)}... [truncated ${serialized.length - 1000} chars]`;
         }
@@ -45,29 +61,11 @@ function formatLogEntry(level: string, args: any[]): string {
   return `[${timestamp}] [${level}] ${message}`;
 }
 
-function saveLogsToStorage() {
+function clearLegacyStoredLogs() {
   try {
-    // Save to localStorage for persistence
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(logBuffer));
+    localStorage.removeItem(LEGACY_STORAGE_KEY);
   } catch (error) {
-    // Ignore storage errors (quota exceeded, etc.)
-    originalConsole.error('Failed to save logs to storage:', error);
-  }
-}
-
-function loadLogsFromStorage() {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      logBuffer = JSON.parse(stored);
-      // Ensure we don't exceed max entries
-      if (logBuffer.length > MAX_LOG_ENTRIES) {
-        logBuffer = logBuffer.slice(-MAX_LOG_ENTRIES);
-      }
-    }
-  } catch (error) {
-    originalConsole.error('Failed to load logs from storage:', error);
-    logBuffer = [];
+    originalConsole.error('Failed to clear legacy console logs from storage:', error);
   }
 }
 
@@ -78,25 +76,14 @@ function addToLogBuffer(entry: string) {
   if (logBuffer.length > MAX_LOG_ENTRIES) {
     logBuffer = logBuffer.slice(-MAX_LOG_ENTRIES);
   }
-  
-  // Save to storage periodically (debounced)
-  if (!addToLogBuffer.saveTimer) {
-    addToLogBuffer.saveTimer = setTimeout(() => {
-      saveLogsToStorage();
-      addToLogBuffer.saveTimer = null;
-    }, 1000);
-  }
 }
-
-// Add type for the timer
-addToLogBuffer.saveTimer = null as NodeJS.Timeout | null;
 
 // Initialize console interceptors
 export function initializeConsoleLogger() {
   if (isInitialized) return;
   
-  // Load existing logs from storage
-  loadLogsFromStorage();
+  // Remove any legacy persisted logs from older builds.
+  clearLegacyStoredLogs();
   
   console.log = (...args: any[]) => {
     originalConsole.log(...args);
@@ -122,18 +109,13 @@ export function initializeConsoleLogger() {
     originalConsole.debug(...args);
     addToLogBuffer(formatLogEntry('DEBUG', args));
   };
-  
-  // Save logs on page unload
-  window.addEventListener('beforeunload', () => {
-    saveLogsToStorage();
-  });
-  
+
   // Log initialization with timestamp and environment info
   const initTime = new Date().toISOString();
   console.log(`[${initTime}] Browser console logger initialized`);
   console.log(`[${initTime}] Environment: ${process.env.NODE_ENV}`);
   console.log(`[${initTime}] Browser mode: Yes`);
-  console.log(`[${initTime}] Logs stored in localStorage with key: ${STORAGE_KEY}`);
+  console.log(`[${initTime}] Console logs are kept in memory for the current session only`);
   
   isInitialized = true;
 }
@@ -146,7 +128,7 @@ export function getConsoleLogs(): string[] {
 // Export function to clear logs
 export function clearConsoleLogs(): void {
   logBuffer = [];
-  localStorage.removeItem(STORAGE_KEY);
+  clearLegacyStoredLogs();
 }
 
 // Export function to download logs as a file
